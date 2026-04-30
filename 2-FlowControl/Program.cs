@@ -18,13 +18,8 @@ var menuSelections = new Dictionary<MenuSelections, string>
 do
 {
 	DisplayMainMenu();
-	int userMenuSelection;
-
-	// Try to parse the number the user inserted, show an error if not valid
-	while (!int.TryParse(Console.ReadLine(), out userMenuSelection) || userMenuSelection > menuSelections.Count - 1)
-	{
-		Console.Write($"--> Error! Try again,\n please insert an valid value between 0 - {menuSelections.Count - 1}: ");
-	}
+	string invalidMenuSelectionMessage = $"-> Error! Try again, please insert an valid value between 0 - {menuSelections.Count - 1}: ";
+	int userMenuSelection = GetValidIntFromUserInput(invalidMenuSelectionMessage, extraIntChecks: (i) => i <= menuSelections.Count - 1);
 
 	switch (userMenuSelection)
 	{
@@ -38,9 +33,6 @@ do
 		case (int)MenuSelections.BuyMultipleTickets:
 			Console.WriteLine("Buy multiple tickets!");
 			Console.ReadLine();
-			break;
-		default:
-			Console.WriteLine("\n--> Default input handler.");
 			break;
 	}
 
@@ -65,6 +57,29 @@ void CloseApp()
 	Console.Clear();
 	userClosedTheProgram = true;
 	Console.WriteLine("\n--> Aplication closed! Thanks for using our app.");
+}
+
+int GetValidIntFromUserInput(string errorMessage = "\nPlease enter a valid integer: ", bool allowNegativeValues = false, Func<int, bool>? extraIntChecks = null)
+{
+	int result;
+	bool validIntInserted = false;
+	do
+	{
+		if (int.TryParse(Console.ReadLine(), out result) &&
+				allowNegativeValues ? true : result > 0 &&
+				extraIntChecks?.Invoke(result) != false
+			)
+		{
+			validIntInserted = true;
+		}
+		else
+		{
+			Console.Write(errorMessage);
+		}
+
+	} while (!validIntInserted);
+
+	return result;
 }
 
 // Asks the user if they want to perform more actions after an action was completed, or just quit the app
@@ -96,45 +111,33 @@ void HandleQuestionAfterCaseHandled(Action closeApp)
 	return prices[PriceCategories.Standard];
 }
 
-#region Case 1 handler
 void HandleBuyOneTicket()
 {
-	int customerAge;
-	bool validAgeInserted = false;
 	Console.Clear();
 	Console.WriteLine("\n--------- Buy one ticket");
 	Console.WriteLine("In order to give you the correct price, we need your age.");
 	Console.Write("\nPlease enter your age: ");
-	do
+
+	int customerAge = GetValidIntFromUserInput("\nPlease enter a valid age value: ");
+
+	(int price, string description) = GetTicketPriceWithDescriptionByAge(customerAge);
+
+	Console.WriteLine($"\nBased on your age ({customerAge}), your ticket will be {price}Kr - for a \"{description}\" ticket.");
+
+	/*
+	* Make sure the client wants to get the ticket.
+	*/
+	Console.WriteLine($"\n-> Do you want to proceed with the purchase? You owe us: {price}Kr.\nPress enter to continue with the purchase, anything else to exit.");
+
+	if (Console.ReadKey(true).Key == ConsoleKey.Enter)
 	{
-		if (!int.TryParse(Console.ReadLine(), out customerAge))
-		{
-			Console.Write("\nPlease enter a valid age value: ");
-			continue;
-		}
-
-		(int price, string description) = GetTicketPriceWithDescriptionByAge(customerAge);
-
-		Console.WriteLine($"\nBased on your age ({customerAge}), your ticket will be {price}Kr - for a \"{description}\" ticket.");
-
-		/*
-		* Make sure the client wants to get the ticket.
-		*/
-		Console.WriteLine($"\n-> Do you want to proceed with the purchase? You owe us: {price}Kr.\nPress enter to continue with the purchase, anything else to exit.");
-
-		if (Console.ReadKey(true).Key == ConsoleKey.Enter)
-		{
-			Console.WriteLine("\nEnjoy the movie!");
-		}
-		else
-		{
-			Console.WriteLine("\nWell, maybe another day, see you!");
-		}
-
-		validAgeInserted = true;
-	} while (!validAgeInserted);
+		Console.WriteLine("\nEnjoy the movie!");
+	}
+	else
+	{
+		Console.WriteLine("\nWell, maybe another day, see you!");
+	}
 }
-#endregion
 
 enum PriceCategories
 {
