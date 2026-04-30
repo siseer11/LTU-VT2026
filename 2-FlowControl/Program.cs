@@ -8,26 +8,36 @@ var prices = new Dictionary<PriceCategories, (int price, string description)>
 	{PriceCategories.Standard, (price: 120, description: "Standard price")},
 };
 
+var menuSelections = new Dictionary<MenuSelections, string>
+{
+	{MenuSelections.CloseApp, "Close App"},
+	{MenuSelections.BuyOneTicket, "Buy one ticket"},
+	{MenuSelections.BuyMultipleTickets, "Buy multiple tickets"}
+};
+
 do
 {
 	DisplayMainMenu();
-	int userInput;
+	int userMenuSelection;
 
 	// Try to parse the number the user inserted, show an error if not valid
-	if (!int.TryParse(Console.ReadLine(), out userInput))
+	while (!int.TryParse(Console.ReadLine(), out userMenuSelection) || userMenuSelection > menuSelections.Count - 1)
 	{
-		Console.WriteLine("--> Error! Try again, please insert an valid integer!");
-		continue;
+		Console.Write($"--> Error! Try again,\n please insert an valid value between 0 - {menuSelections.Count - 1}: ");
 	}
 
-	switch (userInput)
+	switch (userMenuSelection)
 	{
-		case 0:
+		case (int)MenuSelections.CloseApp:
 			CloseApp();
 			break;
-		case 1:
+		case (int)MenuSelections.BuyOneTicket:
 			HandleBuyOneTicket();
 			HandleQuestionAfterCaseHandled(CloseApp);
+			break;
+		case (int)MenuSelections.BuyMultipleTickets:
+			Console.WriteLine("Buy multiple tickets!");
+			Console.ReadLine();
 			break;
 		default:
 			Console.WriteLine("\n--> Default input handler.");
@@ -40,11 +50,13 @@ do
 void DisplayMainMenu()
 {
 	Console.Clear();
-	Console.WriteLine("=========");
-	Console.WriteLine("Welcome to our main menu. You will navigate using numbers,\nthat corespond to the different actions shown below:");
-	Console.WriteLine("=========\n");
-	Console.WriteLine("0 - Close App");
-	Console.WriteLine("1 - Buy one ticket");
+	Console.WriteLine("========= Main menu =========");
+	Console.WriteLine("\nYou will navigate using numbers,\nthat corespond to the different actions shown below:\n");
+	Console.WriteLine("=============================\n");
+	foreach (var item in menuSelections)
+	{
+		Console.WriteLine($"{(int)item.Key} - {item.Value}");
+	}
 	Console.Write("\nYour choice: ");
 }
 
@@ -52,7 +64,7 @@ void CloseApp()
 {
 	Console.Clear();
 	userClosedTheProgram = true;
-	Console.WriteLine("\n--> Aplication closing! Thanks for using our app.");
+	Console.WriteLine("\n--> Aplication closed! Thanks for using our app.");
 }
 
 // Asks the user if they want to perform more actions after an action was completed, or just quit the app
@@ -129,4 +141,11 @@ enum PriceCategories
 	Youth,
 	Pensioner,
 	Standard
+}
+
+enum MenuSelections
+{
+	CloseApp = 0,
+	BuyOneTicket = 1,
+	BuyMultipleTickets = 2,
 }
