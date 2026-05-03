@@ -121,7 +121,7 @@ public class ConsoleUtils
 	}
 
 	// // Asks the user if they want to perform more actions after an action was completed, or just quit the app
-	public static void HandleQuestionAfterCaseHandled(Action closeApp, Action? returnToMainMenu)
+	public static void HandleQuestionAfterCaseHandled(Action closeApp, Action? returnToMainMenu = null)
 	{
 		Console.WriteLine("\n===== Your action is completed ======");
 		bool userWantsToGoToMainMenu = UserConfirmation("\nDo you want to go back to main menu? Or close the app?", [(label: " Main Menu ", value: true), (label: " Close App ", value: false)]);

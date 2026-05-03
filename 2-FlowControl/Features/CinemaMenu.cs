@@ -123,9 +123,8 @@ public class CinemaMenu(MainMenu mainMenu)
 
 		// After we have all the ages for each person in the group, log the total and ask the user if they want to proceed
 		Console.Clear();
-		Console.WriteLine($"\n======== Success ========");
-		Console.WriteLine($"Everyone in the group was added!");
-		Console.WriteLine("Below you can see the detailes and the total");
+		ConsoleUtils.DisplayMenuHeader(["Success!", "Everyone in the group was added.", "(detailed ticket below)"]);
+
 
 		Console.WriteLine("\nCustomer\tAge\tTicket\t\tPrice\n");
 		for (int i = 0; i < groupSize; i++)
@@ -134,13 +133,12 @@ public class CinemaMenu(MainMenu mainMenu)
 
 			Console.WriteLine($"{i + 1}\t\t{age}\t{description}\t{price}Kr");
 		}
-		Console.WriteLine($"\nTotal:\t\t\t\t\t={totalPrice}Kr");
+		Console.WriteLine($"\nTotal:\t\t\t\t\t{totalPrice}Kr");
 
-		Console.WriteLine("---------");
-		Console.WriteLine($"\nIf you want to continue with the purchase (of {totalPrice}Kr) press Enter, any other key to stop it: ");
+		bool userWantsToBuy = ConsoleUtils.YesOrNoUserConfirmation($"\n\nDo you want to proceed with the pruchase? (of {totalPrice}Kr)");
 
 		Console.Clear();
-		if (Console.ReadKey(true).Key == ConsoleKey.Enter)
+		if (userWantsToBuy)
 		{
 			Console.WriteLine("\nEnjoy the movie!");
 		}
@@ -148,7 +146,7 @@ public class CinemaMenu(MainMenu mainMenu)
 		{
 			Console.WriteLine("\nMaybe next time!");
 		}
-		Console.WriteLine("\n================");
+
 	}
 
 	private static void GoToMainMenu()

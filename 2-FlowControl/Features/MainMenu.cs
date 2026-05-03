@@ -10,13 +10,14 @@ public class MainMenu()
 	{
 		CloseApp = 0,
 		Cinema = 1,
+		RepeatTenTimes = 2
 	}
 
 	static readonly Dictionary<MenuSelections, string> menuSelections = new Dictionary<MenuSelections, string>
 	{
 		{MenuSelections.CloseApp, "Close App"},
 		{MenuSelections.Cinema, "Cinema"},
-
+		{MenuSelections.RepeatTenTimes, "Repeat 10 times"}
 	};
 
 	public void CloseApp()
@@ -37,6 +38,29 @@ public class MainMenu()
 		Console.Write("\nNavigate to: ");
 	}
 
+	private void HandleRepeatTenTimes()
+	{
+		Console.Clear();
+		ConsoleUtils.DisplayMenuHeader(["Repeat 10 times"]);
+
+		Console.WriteLine("\n\nInsert something you want to be repeated 10 times: ");
+		string userInput = Console.ReadLine();
+
+		while (userInput == null || userInput.Trim().Length == 0)
+		{
+			Console.WriteLine("Invalid input, no empty inputs allowed! Try again:");
+			userInput = Console.ReadLine();
+		}
+
+		for (int i = 1; i <= 10; i++)
+		{
+			Console.Write($"{i}.{userInput}");
+			if (i < 10)
+				Console.Write(", ");
+		}
+		Console.WriteLine("");
+	}
+
 	public void Run()
 	{
 		do
@@ -53,6 +77,10 @@ public class MainMenu()
 					break;
 				case (int)MenuSelections.Cinema:
 					new CinemaMenu(this).Run();
+					break;
+				case (int)MenuSelections.RepeatTenTimes:
+					HandleRepeatTenTimes();
+					ConsoleUtils.HandleQuestionAfterCaseHandled(CloseApp);
 					break;
 			}
 
