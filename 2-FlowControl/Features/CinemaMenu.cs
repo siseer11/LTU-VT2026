@@ -1,4 +1,5 @@
 using System;
+using System.Reflection.Emit;
 using _2_FlowControl.Utils;
 
 namespace _2_FlowControl.Features;
@@ -13,6 +14,7 @@ public class CinemaMenu(MainMenu mainMenu)
 		GoBack = 0,
 		BuyOneTicket = 1,
 		BuyGroupTickets = 2,
+		ShowPrices = 3
 	}
 
 	public enum PriceCategories
@@ -26,18 +28,19 @@ public class CinemaMenu(MainMenu mainMenu)
 	#region Constants
 	static bool cinemaMenuClosed = false;
 
-	static readonly Dictionary<PriceCategories, (int price, string description)> prices = new()
+	static readonly Dictionary<PriceCategories, (int price, string description, string ageRangeDescription)> prices = new()
 	{
-		{PriceCategories.Youth, (price: 80, description: "Youth price")},
-		{PriceCategories.Pensioner, (price: 90, description: "Pensioner price")},
-		{PriceCategories.Standard, (price: 120, description: "Standard price")},
+		{PriceCategories.Youth, (price: 80, description: "Youth price", ageRangeDescription: "under 20")},
+		{PriceCategories.Pensioner, (price: 90, description: "Pensioner price", ageRangeDescription: "over 64")},
+		{PriceCategories.Standard, (price: 120, description: "Standard price", ageRangeDescription: "between 20 - 64")},
 	};
 
 	static readonly Dictionary<MenuSelections, string> menuSelections = new Dictionary<MenuSelections, string>
 	{
 		{MenuSelections.GoBack, "<- Back"},
 		{MenuSelections.BuyOneTicket, "Buy one ticket"},
-		{MenuSelections.BuyGroupTickets, "Buy group tickets"}
+		{MenuSelections.BuyGroupTickets, "Buy group tickets"},
+		{MenuSelections.ShowPrices, "Show prices"}
 	};
 	#endregion
 
@@ -53,7 +56,7 @@ public class CinemaMenu(MainMenu mainMenu)
 		Console.Write("\nNavigate to: ");
 	}
 
-	private static (int price, string description) GetTicketPriceWithDescriptionByAge(int age)
+	private static (int price, string description, string ageRangeDescription) GetTicketPriceWithDescriptionByAge(int age)
 	{
 		if (age < 20)
 		{
@@ -77,7 +80,7 @@ public class CinemaMenu(MainMenu mainMenu)
 
 		int customerAge = ConsoleUtils.GetValidIntFromUserInput("\nPlease enter a valid age value: ");
 
-		(int price, string description) = GetTicketPriceWithDescriptionByAge(customerAge);
+		(int price, string description, string ageRangeDescription) = GetTicketPriceWithDescriptionByAge(customerAge);
 
 		/*
 		* Make sure the client wants to get the ticket.
@@ -114,7 +117,7 @@ public class CinemaMenu(MainMenu mainMenu)
 			Console.Write($"\n-----> Person {i + 1} age: ");
 			int customerAge = ConsoleUtils.GetValidIntFromUserInput($"Please enter a valid age value for the person {i + 1}: ");
 
-			(int price, string description) = GetTicketPriceWithDescriptionByAge(customerAge);
+			(int price, string description, string ageRangeDescription) = GetTicketPriceWithDescriptionByAge(customerAge);
 			totalPrice += price;
 
 			group[i] = (age: customerAge, price, description);
@@ -149,6 +152,21 @@ public class CinemaMenu(MainMenu mainMenu)
 
 	}
 
+	private void HandleShowPrices()
+	{
+		Console.Clear();
+		ConsoleUtils.DisplayMenuHeader(["Ticket prices", "(based on age)"]);
+
+		Console.WriteLine("\n\nPrice\tCategory\n");
+		foreach (var priceCategory in prices)
+		{
+			Console.WriteLine($"{priceCategory.Value.price}Kr\t{priceCategory.Value.description} ({priceCategory.Value.ageRangeDescription})");
+		}
+
+		bool closeApp = ConsoleUtils.UserConfirmation("", [(label: " Go back ", value: false), (label: " Close app ", value: true)]);
+		if (closeApp)
+			CloseApp();
+	}
 	private static void GoToMainMenu()
 	{
 		cinemaMenuClosed = true;
@@ -184,6 +202,9 @@ public class CinemaMenu(MainMenu mainMenu)
 				case (int)MenuSelections.BuyGroupTickets:
 					HandleBuyGroupTickets();
 					ConsoleUtils.HandleQuestionAfterCaseHandled(CloseApp, GoToMainMenu);
+					break;
+				case (int)MenuSelections.ShowPrices:
+					HandleShowPrices();
 					break;
 			}
 
