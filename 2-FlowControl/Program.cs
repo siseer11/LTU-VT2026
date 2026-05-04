@@ -1,11 +1,10 @@
 ﻿
 
-using _2_FlowControl.Features;
+using _2_FlowControl;
 
 
-
-MainMenu mainmenu = new();
-mainmenu.Run();
+App app = new();
+app.Run();
 
 
 

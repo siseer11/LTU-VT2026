@@ -1,11 +1,8 @@
-using System;
 using _2_FlowControl.Utils;
-
 namespace _2_FlowControl.Features;
 
 public class MainMenu()
 {
-	private bool userClosedMenu = false;
 	public enum MenuSelections
 	{
 		CloseApp = 0,
@@ -21,13 +18,6 @@ public class MainMenu()
 		{MenuSelections.RepeatTenTimes, "Repeat 10 times"},
 		{MenuSelections.ThirdWordInSentance, "Extract the 3rd word in a sentence"}
 	};
-
-	public void CloseApp()
-	{
-		Console.Clear();
-		Console.WriteLine("\n--> Aplication closed! Thanks for using our app.");
-		userClosedMenu = true;
-	}
 
 	private static void Display()
 	{
@@ -97,21 +87,21 @@ public class MainMenu()
 			switch (userMenuSelection)
 			{
 				case (int)MenuSelections.CloseApp:
-					CloseApp();
+					App.StopApp();
 					break;
 				case (int)MenuSelections.Cinema:
 					new CinemaMenu(this).Run();
 					break;
 				case (int)MenuSelections.RepeatTenTimes:
 					HandleRepeatTenTimes();
-					ConsoleUtils.HandleQuestionAfterCaseHandled(CloseApp);
+					ConsoleUtils.HandleQuestionAfterCaseHandled(App.StopApp);
 					break;
 				case (int)MenuSelections.ThirdWordInSentance:
 					HandleExtractThirdWordInSentance();
-					ConsoleUtils.HandleQuestionAfterCaseHandled(CloseApp);
+					ConsoleUtils.HandleQuestionAfterCaseHandled(App.StopApp);
 					break;
 			}
 
-		} while (!userClosedMenu);
+		} while (App.appRunning);
 	}
 }

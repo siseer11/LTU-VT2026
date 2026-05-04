@@ -13,7 +13,7 @@ public class ConsoleUtils
 	// Helper that displays the menu header with a "divider line" at top and bottom, to keep it in sync everywhere
 	public static void DisplayMenuHeader(string[] lines, char divider = '-')
 	{
-		int longestLine = 20;
+		int longestLine = 35;
 
 		foreach (string line in lines)
 			longestLine = Math.Max(longestLine, line.Length);
@@ -52,8 +52,8 @@ public class ConsoleUtils
 	}
 
 
-	// Helper that displays a selection menu, that the user can toggle between using keyboard
-	public static T UserConfirmation<T>(string question, List<(string label, T value)> options, Directions direction = Directions.row)
+	// Helper that displays a selection menu, that the user can toggle between using the keyboard. Returns the value of the selected field when the user presses Enter
+	public static T KeyboardControllMenu<T>(string title, List<(string label, T value)> options, Directions direction = Directions.row)
 	{
 		if (options == null || options.Count == 0)
 			throw new ArgumentException("Options cannot be empty.");
@@ -61,7 +61,7 @@ public class ConsoleUtils
 		bool userSelected = false;
 		int activeIdx = 0;
 
-		Console.WriteLine(question);
+		Console.WriteLine(title);
 		Console.CursorVisible = false;
 
 		do
@@ -117,14 +117,14 @@ public class ConsoleUtils
 
 	public static bool YesOrNoUserConfirmation(string question)
 	{
-		return UserConfirmation(question, [(label: " YES ", value: true), (label: " NO ", value: false)]);
+		return KeyboardControllMenu(question, [(label: " YES ", value: true), (label: " NO ", value: false)]);
 	}
 
 	// // Asks the user if they want to perform more actions after an action was completed, or just quit the app
 	public static void HandleQuestionAfterCaseHandled(Action closeApp, Action? returnToMainMenu = null)
 	{
 		Console.WriteLine("\n===== Your action is completed ======");
-		bool userWantsToGoToMainMenu = UserConfirmation("\nDo you want to go back to main menu? Or close the app?", [(label: " Main Menu ", value: true), (label: " Close App ", value: false)]);
+		bool userWantsToGoToMainMenu = KeyboardControllMenu("\nDo you want to go back to main menu? Or close the app?", [(label: " Main Menu ", value: true), (label: " Close App ", value: false)]);
 
 		if (userWantsToGoToMainMenu)
 		{

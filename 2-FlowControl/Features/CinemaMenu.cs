@@ -155,60 +155,58 @@ public class CinemaMenu(MainMenu mainMenu)
 	private void HandleShowPrices()
 	{
 		Console.Clear();
-		ConsoleUtils.DisplayMenuHeader(["Ticket prices", "(based on age)"]);
+		ConsoleUtils.DisplayMenuHeader(["Ticket prices", "(by age)"]);
 
-		Console.WriteLine("\n\nPrice\tCategory\n");
+		Console.WriteLine("\n\nPrice\t\tCategory\t\tAge range\n");
 		foreach (var priceCategory in prices)
 		{
-			Console.WriteLine($"{priceCategory.Value.price}Kr\t{priceCategory.Value.description} ({priceCategory.Value.ageRangeDescription})");
+			Console.WriteLine($"{priceCategory.Value.price}Kr\t\t{priceCategory.Value.description}\t\t{priceCategory.Value.ageRangeDescription}");
 		}
 
-		bool closeApp = ConsoleUtils.UserConfirmation("", [(label: " Go back ", value: false), (label: " Close app ", value: true)]);
-		if (closeApp)
-			CloseApp();
+		bool userChoseToCloseApp = ConsoleUtils.KeyboardControllMenu("", [(label: " Go back ", value: false), (label: " Close app ", value: true)]);
+		if (userChoseToCloseApp)
+			App.StopApp();
 	}
 	private static void GoToMainMenu()
 	{
 		cinemaMenuClosed = true;
 	}
 
-	private void CloseApp()
-	{
-		_mainMenu.CloseApp();
-		cinemaMenuClosed = true;
-	}
 	#endregion
 
 	public void Run()
 	{
-		Display();
 
 		do
 		{
-			Display();
+			//Display();
 
+			Console.Clear();
+			ConsoleUtils.DisplayMenuHeader(["CINEMA MENU", "(navigate using arrows/wasd or tab)"], '-');
+			Console.WriteLine("\n\nSelect one:");
+			MenuSelections userSelection = ConsoleUtils.KeyboardControllMenu("", [(label: "1. Go Back", value: MenuSelections.GoBack), (label: "2. Buy one ticket", value: MenuSelections.BuyOneTicket), (label: "3. Buy group tickets", value: MenuSelections.BuyGroupTickets), (label: "4. Show prices table", value: MenuSelections.ShowPrices)], ConsoleUtils.Directions.column);
 			string invalidMenuSelectionMessage = $"  Please insert an valid value between 0 - {menuSelections.Count - 1}: ";
-			int userMenuSelection = ConsoleUtils.GetValidIntFromUserInput(invalidMenuSelectionMessage, extraIntChecks: (i) => i <= menuSelections.Count - 1);
+			// int userMenuSelection = ConsoleUtils.GetValidIntFromUserInput(invalidMenuSelectionMessage, extraIntChecks: (i) => i <= menuSelections.Count - 1);
 
-			switch (userMenuSelection)
+			switch (userSelection)
 			{
-				case (int)MenuSelections.GoBack:
+				case MenuSelections.GoBack:
 					GoToMainMenu();
 					break;
-				case (int)MenuSelections.BuyOneTicket:
+				case MenuSelections.BuyOneTicket:
 					HandleBuyOneTicket();
-					ConsoleUtils.HandleQuestionAfterCaseHandled(CloseApp, GoToMainMenu);
+					ConsoleUtils.HandleQuestionAfterCaseHandled(App.StopApp, GoToMainMenu);
 					break;
-				case (int)MenuSelections.BuyGroupTickets:
+				case MenuSelections.BuyGroupTickets:
 					HandleBuyGroupTickets();
-					ConsoleUtils.HandleQuestionAfterCaseHandled(CloseApp, GoToMainMenu);
+					ConsoleUtils.HandleQuestionAfterCaseHandled(App.StopApp, GoToMainMenu);
 					break;
-				case (int)MenuSelections.ShowPrices:
+				case MenuSelections.ShowPrices:
 					HandleShowPrices();
 					break;
 			}
 
-		} while (!cinemaMenuClosed);
+		} while (!cinemaMenuClosed && App.appRunning);
 
 	}
 }
