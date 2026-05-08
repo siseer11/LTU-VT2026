@@ -1,0 +1,6 @@
+firstName:Bobby;age:32;jerseyNumber:999;position:0
+firstName:Zolo;age:21;jerseyNumber:10;position:4
+firstName:Stonko;age:120;jerseyNumber:41;position:2
+firstName:Ciobi;age:55;jerseyNumber:99;position:1
+firstName:Jionz;age:29;jerseyNumber:11;position:3
+firstName:Gionco;age:13;jerseyNumber:9;position:1
