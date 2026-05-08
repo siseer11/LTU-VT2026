@@ -49,5 +49,5 @@ while (userInput != 4)
 	Console.WriteLine("Enter a number, press 4 to exit:");
 	userInput = int.Parse(Console.ReadLine());
 }
-
-Console.WriteLine("Done!");
+Console.ForegroundColor = ConsoleColor.Green;
+Console.WriteLine("🏂 Done! Time for 🚲!");
