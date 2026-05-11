@@ -11,6 +11,8 @@ public abstract class Vehicle
 	public string Model { get; }
 	public string RegistrationNr { get; }
 	private int? _manufacturingYear;
+	private string? _color;
+
 	public int? ManufacturingYear
 	{
 		get => _manufacturingYear; set
@@ -22,15 +24,29 @@ public abstract class Vehicle
 			_manufacturingYear = value;
 		}
 	}
-	public string? Color { get; set; }
+	public string? Color
+	{
+		get => _color;
+		set
+		{
+			_color = string.IsNullOrEmpty(value) ? null : value;
+		}
+	}
 	public int? NumberOfEngines { get; set; }
 	public FuelTypeEnum? FuelType { get; set; }
 	public int? NumberOfSeats { get; set; }
 	public double? Length { get; set; }
 
+	public bool Parked { get; private set; } = false;
+
 	public string GetBasicDetailsString()
 	{
 		return $"{Icon} - [{RegistrationNr}] {Brand} {Model}";
+	}
+
+	public void SetParkedStatus(bool newStatus)
+	{
+		Parked = newStatus;
 	}
 
 	public Vehicle(string brand, string model, string registrationNr)

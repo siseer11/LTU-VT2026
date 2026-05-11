@@ -9,9 +9,14 @@
 
   <ItemGroup>
     <Folder Include="ConsoleUI/" />
+    <Folder Include="FileData/" />
     <Folder Include="Garage/" />
     <Folder Include="Shared/" />
     <Folder Include="Vehicles/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
 </Project>

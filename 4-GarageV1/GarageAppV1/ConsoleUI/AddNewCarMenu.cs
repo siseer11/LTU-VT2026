@@ -66,19 +66,28 @@ public class AddNewCarMenu : Menu
 		Vehicle? newVehicle = newVehicleType switch
 		{
 			VehicleTypes.Car => new Car(brand, model, registrationNr) { Color = color, FuelType = fuelType, Length = length, ManufacturingYear = year, NumberOfEngines = nrOfEngines, NumberOfSeats = nrOfSeats },
-			VehicleTypes.Airplane => new Car(brand, model, registrationNr) { Color = color, FuelType = fuelType, Length = length, ManufacturingYear = year, NumberOfEngines = nrOfEngines, NumberOfSeats = nrOfSeats },
-			VehicleTypes.Boat => new Car(brand, model, registrationNr) { Color = color, FuelType = fuelType, Length = length, ManufacturingYear = year, NumberOfEngines = nrOfEngines, NumberOfSeats = nrOfSeats },
-			VehicleTypes.Bus => new Car(brand, model, registrationNr) { Color = color, FuelType = fuelType, Length = length, ManufacturingYear = year, NumberOfEngines = nrOfEngines, NumberOfSeats = nrOfSeats },
-			VehicleTypes.Motorcycle => new Car(brand, model, registrationNr) { Color = color, FuelType = fuelType, Length = length, ManufacturingYear = year, NumberOfEngines = nrOfEngines, NumberOfSeats = nrOfSeats },
+			VehicleTypes.Airplane => new Airplane(brand, model, registrationNr) { Color = color, FuelType = fuelType, Length = length, ManufacturingYear = year, NumberOfEngines = nrOfEngines, NumberOfSeats = nrOfSeats },
+			VehicleTypes.Boat => new Boat(brand, model, registrationNr) { Color = color, FuelType = fuelType, Length = length, ManufacturingYear = year, NumberOfEngines = nrOfEngines, NumberOfSeats = nrOfSeats },
+			VehicleTypes.Bus => new Buss(brand, model, registrationNr) { Color = color, FuelType = fuelType, Length = length, ManufacturingYear = year, NumberOfEngines = nrOfEngines, NumberOfSeats = nrOfSeats },
+			VehicleTypes.Motorcycle => new Motorcycle(brand, model, registrationNr) { Color = color, FuelType = fuelType, Length = length, ManufacturingYear = year, NumberOfEngines = nrOfEngines, NumberOfSeats = nrOfSeats },
 			_ => null
 		};
 
 		if (newVehicle is not null)
 		{
-			VehiclesList.AddVehicle(newVehicle);
-			ConsoleUtils.LogSuccess("The vehicle was succesfully added to your colection! Enjoy!");
-			Console.WriteLine("\nNew vehicle details:");
-			Console.WriteLine(newVehicle.GetBasicDetailsString());
+			(bool savedSuccessfully, string? errorUserMsg, string? errorDetails) = VehiclesList.AddVehicle(newVehicle);
+			if (savedSuccessfully)
+			{
+				ConsoleUtils.LogSuccess("The vehicle was succesfully added to your colection! Enjoy!");
+				Console.WriteLine("\nNew vehicle details:");
+				Console.WriteLine(newVehicle.GetBasicDetailsString());
+			}
+			else
+			{
+				ConsoleUtils.LogError(errorUserMsg);
+				if (!string.IsNullOrEmpty(errorDetails))
+					ConsoleUtils.LogColor($"({errorDetails})", ConsoleColor.Red);
+			}
 		}
 		else
 		{
@@ -94,8 +103,6 @@ public class AddNewCarMenu : Menu
 			(label: " Main Menu ", value: NavigateToMainMenu),
 			(label: " Close App ", value: CloseApp)
 		], ConsoleUtils.Directions.column)();
-		Console.ReadLine();
-
 		// GoBack();
 	}
 }

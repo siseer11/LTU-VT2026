@@ -9,7 +9,7 @@ public class VehiclesMenu : Menu
 	{
 		MenuItems = [
 			(label: "1. Register new ", value: RegisterNewHandler),
-			(label: "2. List all ", value: () => Console.WriteLine("2")),
+			(label: "2. List all ", value: ListAllVehiclesHandler),
 			(label: "Main menu ", value: NavigateToMainMenu),
 			(label: "Close app ", value: CloseApp)
 		 ];
@@ -26,6 +26,12 @@ public class VehiclesMenu : Menu
 	private void RegisterNewHandler()
 	{
 		AddNewCarMenu addNewCarMenu = new();
-		addNewCarMenu.Run();
+		NavigateToNewMenu(addNewCarMenu);
+	}
+
+	private void ListAllVehiclesHandler()
+	{
+		ListAllVehiclesMenu listAllVehiclesMenu = new();
+		NavigateToNewMenu(listAllVehiclesMenu);
 	}
 }
