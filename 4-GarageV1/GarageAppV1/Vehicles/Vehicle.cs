@@ -10,10 +10,7 @@ public abstract class Vehicle
 	public string Brand { get; }
 	public string Model { get; }
 	public string RegistrationNr { get; }
-
-
 	private int? _manufacturingYear;
-
 	public int? ManufacturingYear
 	{
 		get => _manufacturingYear; set
@@ -25,11 +22,16 @@ public abstract class Vehicle
 			_manufacturingYear = value;
 		}
 	}
-	public string? Color { get; }
-	public int? NumberOfEngines { get; }
-	public FuelTypeEnum? FuelType { get; }
-	public int? NumberOfSeats { get; }
-	public double? Length { get; }
+	public string? Color { get; set; }
+	public int? NumberOfEngines { get; set; }
+	public FuelTypeEnum? FuelType { get; set; }
+	public int? NumberOfSeats { get; set; }
+	public double? Length { get; set; }
+
+	public string GetBasicDetailsString()
+	{
+		return $"{Icon} - [{RegistrationNr}] {Brand} {Model}";
+	}
 
 	public Vehicle(string brand, string model, string registrationNr)
 	{
@@ -63,6 +65,9 @@ public abstract class Vehicle
 
 	protected static (bool passed, string? errorMessage) CheckYearValue(string text)
 	{
+		if (string.IsNullOrEmpty(text))
+			return (passed: true, errorMessage: null);
+
 		if (!int.TryParse(text, out int parsedYear) || parsedYear < 1500 || parsedYear > DateTime.Now.Year)
 			return (passed: false, errorMessage: $"Year must be between 1500 - {DateTime.Now.Year}");
 		else
@@ -155,13 +160,13 @@ public abstract class Vehicle
 
 	#endregion
 
-	// public Vehicle()
+	#region Add Vehicle Form stuff
 	public static FormOptionsType VehicleFormOptions = [
 		(label: "Brand:", value: "", required: true, valueCheck: CheckBrandValue),
 		(label: "Model:", value: "", required: true, valueCheck: CheckModelValue),
-		(label: "Year:", value: "", required: true, valueCheck: CheckYearValue),
 		(label: "Registration nr:", value: "", required: true, valueCheck: CheckRegistrationNumber),
 
+		(label: "Year:", value: "", required: false, valueCheck: CheckYearValue),
 		(label: "Color:", value: "", required: false, valueCheck: CheckColorValue),
 		(label: "Number of engines:", value: "", required: false, valueCheck: CheckNumberOfEngines),
 		(label: "Fuel type:", value: "", required: false, valueCheck: CheckFuelType),
@@ -169,18 +174,26 @@ public abstract class Vehicle
 		(label: "Length:", value: "", required: false, valueCheck: CheckLength),
 	];
 
+	public static void LogShit()
+	{
+		foreach (var item in VehicleFormOptions)
+		{
+			Console.WriteLine($"{item.label}: {item.value}");
+		}
+	}
+
 	// Override these in each vehicle, as needed using the "new" keyword instead of "overrite"
 	public static FormOptionsType GetFormOptionsByVehicleType(VehicleTypes vehicleType)
 	{
 		return vehicleType switch
 		{
-			VehicleTypes.Car => Car.VehicleFormOptions,
-			VehicleTypes.Airplane => Airplane.VehicleFormOptions,
-			VehicleTypes.Boat => Boat.VehicleFormOptions,
-			VehicleTypes.Bus => Buss.VehicleFormOptions,
-			VehicleTypes.Motorcycle => Motorcycle.VehicleFormOptions,
-			_ => VehicleFormOptions,
+			VehicleTypes.Car => [.. Car.VehicleFormOptions],
+			VehicleTypes.Airplane => [.. Airplane.VehicleFormOptions],
+			VehicleTypes.Boat => [.. Boat.VehicleFormOptions],
+			VehicleTypes.Bus => [.. Buss.VehicleFormOptions],
+			VehicleTypes.Motorcycle => [.. Motorcycle.VehicleFormOptions],
+			_ => [.. VehicleFormOptions],
 		};
-
 	}
+	#endregion
 }

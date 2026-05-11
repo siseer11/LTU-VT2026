@@ -1,4 +1,5 @@
 using System;
+using GarageAppV1.Vehicles;
 
 namespace GarageAppV1.ConsoleUI;
 

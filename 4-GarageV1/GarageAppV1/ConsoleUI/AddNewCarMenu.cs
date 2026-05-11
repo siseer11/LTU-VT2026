@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using GarageAppV1.Shared;
 using GarageAppV1.Vehicles;
 
@@ -40,12 +41,59 @@ public class AddNewCarMenu : Menu
 		));
 
 		// Step 3 | Create the vehicle with the data
-		Console.WriteLine("A CAR WAS CREATED!");
+		Console.Clear();
+		ConsoleUtils.DisplayMenuHeader([$"✨ Registration Finished ({VehicleUtils.GetIconByVehicleType(newVehicleType)})"], '-');
 
-		foreach (var formValue in formValues)
+		// TODO: This is not the best, but will do for now since we use arrays
+		string brand = formValues[0].value;
+		string model = formValues[1].value;
+		string registrationNr = formValues[2].value;
+		string yearString = formValues[3].value;
+		string color = formValues[4].value;
+		string nrOfEnginesString = formValues[5].value;
+		string fuelTypeString = formValues[6].value;
+		string numberOfSeatsString = formValues[7].value;
+		string lengthString = formValues[8].value;
+
+		// parse the values that are not accepted as strings
+		FuelTypeEnum? fuelType = Enum.TryParse(fuelTypeString, out FuelTypeEnum parsedFuelType) ? parsedFuelType : null;
+		int? year = int.TryParse(yearString, out int parsedYear) ? parsedYear : null;
+		int? nrOfEngines = int.TryParse(nrOfEnginesString, out int parsedNrOfEngines) ? parsedNrOfEngines : null;
+		int? nrOfSeats = int.TryParse(numberOfSeatsString, out int parsedNrOfSeats) ? parsedNrOfSeats : null;
+		double? length = double.TryParse(lengthString, out double parsedLength) ? parsedLength : null;
+
+		// Generate the new vehicle
+		Vehicle? newVehicle = newVehicleType switch
 		{
-			Console.WriteLine($"{formValue.label} : {formValue.value}");
+			VehicleTypes.Car => new Car(brand, model, registrationNr) { Color = color, FuelType = fuelType, Length = length, ManufacturingYear = year, NumberOfEngines = nrOfEngines, NumberOfSeats = nrOfSeats },
+			VehicleTypes.Airplane => new Car(brand, model, registrationNr) { Color = color, FuelType = fuelType, Length = length, ManufacturingYear = year, NumberOfEngines = nrOfEngines, NumberOfSeats = nrOfSeats },
+			VehicleTypes.Boat => new Car(brand, model, registrationNr) { Color = color, FuelType = fuelType, Length = length, ManufacturingYear = year, NumberOfEngines = nrOfEngines, NumberOfSeats = nrOfSeats },
+			VehicleTypes.Bus => new Car(brand, model, registrationNr) { Color = color, FuelType = fuelType, Length = length, ManufacturingYear = year, NumberOfEngines = nrOfEngines, NumberOfSeats = nrOfSeats },
+			VehicleTypes.Motorcycle => new Car(brand, model, registrationNr) { Color = color, FuelType = fuelType, Length = length, ManufacturingYear = year, NumberOfEngines = nrOfEngines, NumberOfSeats = nrOfSeats },
+			_ => null
+		};
+
+		if (newVehicle is not null)
+		{
+			VehiclesList.AddVehicle(newVehicle);
+			ConsoleUtils.LogSuccess("The vehicle was succesfully added to your colection! Enjoy!");
+			Console.WriteLine("\nNew vehicle details:");
+			Console.WriteLine(newVehicle.GetBasicDetailsString());
 		}
+		else
+		{
+			ConsoleUtils.LogError("Unexpected error, the vehicle could not be created!");
+		}
+
+
+		ConsoleUtils.KeyboardControllMenu("\n\nNavigate to:", [
+			(label: " Vehicles ", value: () => {
+				VehiclesMenu vehiclesMenu = new();
+				NavigateToNewMenu(vehiclesMenu);
+			}),
+			(label: " Main Menu ", value: NavigateToMainMenu),
+			(label: " Close App ", value: CloseApp)
+		], ConsoleUtils.Directions.column)();
 		Console.ReadLine();
 
 		// GoBack();
