@@ -8,7 +8,7 @@ public class MainMenu : Menu
 	{
 		_menuItems = [
 			(label: "1. Garage ", value: NavigateToGarageMenu),
-			(label: "2. Vehicles ", value: HandleVehiclesRoute),
+			(label: "2. Vehicles ", value: NavigateToVehiclesMenu),
 			(label: "Close App ", value: CloseApp)
 		];
 	}
@@ -21,11 +21,4 @@ public class MainMenu : Menu
 		// Here we display the menu and call the return value (the value from the _menuItems) which handles the user selection
 		ConsoleUtils.KeyboardControllMenu("", _menuItems.ToList(), ConsoleUtils.Directions.column)();
 	}
-
-	private void HandleVehiclesRoute()
-	{
-		VehiclesMenu vehiclesMenu = new();
-		NavigateToNewMenu(vehiclesMenu);
-	}
-
 }

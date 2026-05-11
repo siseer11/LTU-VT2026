@@ -228,7 +228,7 @@ public partial class ConsoleUtils
 					Console.Write(keyPressedWhileInEdditInfo.KeyChar);
 				}
 			}
-		} while (!userClosedIt);
+		} while (!userClosedIt && App.AppRunning);
 
 
 		return options;

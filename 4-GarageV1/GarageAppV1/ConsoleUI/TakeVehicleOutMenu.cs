@@ -57,20 +57,23 @@ public class TakeVehicleOutMenu : Menu
 			{
 				NavigateToGarageMenu();
 			}
-
-			(bool takenOutSuccessfully, string? parkErrorMessage) = App.NewGarage!.TakeVehicleOut(registrationNumber);
-			if (takenOutSuccessfully)
-			{
-				ConsoleUtils.LogSuccess($"Enjoy the ride!\n");
-			}
 			else
 			{
-				ConsoleUtils.LogError($"Something went wrong taking out the vehicle!");
-				if (parkErrorMessage is not null)
-					ConsoleUtils.LogColor(parkErrorMessage, ConsoleColor.Red);
-				Console.WriteLine();
+				(bool takenOutSuccessfully, string? parkErrorMessage) = App.NewGarage!.TakeVehicleOut(registrationNumber);
+				if (takenOutSuccessfully)
+				{
+					ConsoleUtils.LogSuccess($"Enjoy the ride!\n");
+				}
+				else
+				{
+					ConsoleUtils.LogError($"Something went wrong taking out the vehicle!");
+					if (parkErrorMessage is not null)
+						ConsoleUtils.LogColor(parkErrorMessage, ConsoleColor.Red);
+					Console.WriteLine();
+				}
+				PressToGoBackToGarageMenu();
 			}
-			PressToGoBackToGarageMenu();
+
 		}
 	}
 }

@@ -67,25 +67,27 @@ public class ParkVehicleMenu : Menu
 				{
 					NavigateToGarageMenu();
 				}
-
-				// park the car
-				Vehicle vehicleToPark = VehiclesList.GetVehicleByRegistrationNumber(registrationNumber)!;
-				(bool parkedSuccessfully, string? parkErrorMessage) = App.NewGarage!.ParkVehicle(registrationNumber);
-
-				if (parkedSuccessfully)
-				{
-					ConsoleUtils.LogSuccess($"{vehicleToPark.Icon} Vehicle with registration [{vehicleToPark.RegistrationNr}] was parked successfully!\n");
-					if (numberOfAvailableSpots == 1)
-						ConsoleUtils.LogWarning($"There are no more available spots in the garage now!");
-				}
 				else
 				{
-					ConsoleUtils.LogError($"Something went wrong parking the vehicle with registration [{vehicleToPark.RegistrationNr}]!");
-					if (parkErrorMessage is not null)
-						ConsoleUtils.LogColor(parkErrorMessage, ConsoleColor.Red);
-					Console.WriteLine();
+					// park the car
+					Vehicle vehicleToPark = VehiclesList.GetVehicleByRegistrationNumber(registrationNumber)!;
+					(bool parkedSuccessfully, string? parkErrorMessage) = App.NewGarage!.ParkVehicle(registrationNumber);
+
+					if (parkedSuccessfully)
+					{
+						ConsoleUtils.LogSuccess($"{vehicleToPark.Icon} Vehicle with registration [{vehicleToPark.RegistrationNr}] was parked successfully!\n");
+						if (numberOfAvailableSpots == 1)
+							ConsoleUtils.LogWarning($"There are no more available spots in the garage now!");
+					}
+					else
+					{
+						ConsoleUtils.LogError($"Something went wrong parking the vehicle with registration [{vehicleToPark.RegistrationNr}]!");
+						if (parkErrorMessage is not null)
+							ConsoleUtils.LogColor(parkErrorMessage, ConsoleColor.Red);
+						Console.WriteLine();
+					}
+					PressToGoBackToGarageMenu();
 				}
-				PressToGoBackToGarageMenu();
 			}
 		}
 	}

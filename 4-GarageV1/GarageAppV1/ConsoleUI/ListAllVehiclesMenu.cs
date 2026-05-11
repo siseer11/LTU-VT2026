@@ -12,10 +12,7 @@ public class ListAllVehiclesMenu : Menu
 		Console.WriteLine("");
 		VehiclesList.ListTableWithAllVehicles();
 		ConsoleUtils.KeyboardControllMenu("\n\nNavigate to:", [
-			(label: "Vehicles ", value: () => {
-				VehiclesMenu vehiclesMenu = new();
-				NavigateToNewMenu(vehiclesMenu);
-			}),
+			(label: "Vehicles ", value: NavigateToVehiclesMenu),
 			(label: "Main Menu ", value: NavigateToMainMenu),
 			(label: "Close App ", value: CloseApp)
 		], ConsoleUtils.Directions.column)();
