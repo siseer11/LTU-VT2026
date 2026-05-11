@@ -1,5 +1,6 @@
 using GarageAppV1.ConsoleUI;
 using GarageAppV1.Garage;
+using GarageAppV1.Vehicles;
 
 namespace GarageAppV1;
 
@@ -18,6 +19,9 @@ public class App
 
 	public void Run()
 	{
+		// populate with data from files
+		VehiclesList.PopulateWithDataFromFile();
+
 		MainMenu mainMenu = new();
 		mainMenu.Run();
 	}

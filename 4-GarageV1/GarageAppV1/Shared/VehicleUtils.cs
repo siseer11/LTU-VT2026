@@ -8,8 +8,8 @@ public class VehicleUtils
 		 type switch
 		 {
 			 VehicleTypes.Car => "🚗",
-			 VehicleTypes.Airplane => "✈️",
-			 VehicleTypes.Boat => "🛥️",
+			 VehicleTypes.Airplane => "✈️ ",
+			 VehicleTypes.Boat => "🛥️ ",
 			 VehicleTypes.Bus => "🚌",
 			 VehicleTypes.Motorcycle => "🛵",
 			 _ => "🤷"

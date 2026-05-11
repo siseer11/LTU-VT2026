@@ -25,8 +25,6 @@ public class FileUtils
 
 			// write to file
 			File.WriteAllText(filePath, data);
-			Console.WriteLine(data);
-			Console.ReadLine();
 			return (successfull: true, errorMsg: null);
 		}
 		catch (Exception e)
@@ -41,7 +39,7 @@ public class FileUtils
 		Formatting = Formatting.Indented
 	};
 
-	public static T[]? ReadFromFile<T>(string fileName)
+	public static (bool successfully, string? errorMsg, T[]? data) ReadFromFile<T>(string fileName)
 	{
 		string filePath = Path.Combine(appDirectoryPath, $"{fileName}.txt");
 
@@ -50,36 +48,36 @@ public class FileUtils
 			string fileData = File.ReadAllText(filePath);
 			T[] deJsonified = JsonConvert.DeserializeObject<T[]>(fileData, JsonSettings)!;
 
-			return deJsonified;
+			return (successfully: true, errorMsg: null, data: deJsonified);
 		}
-		catch (FileLoadException fle)
+		catch (Exception e)
 		{
-			Console.WriteLine($"🛑 File {fileName} could not be loaded!");
-			Console.WriteLine(fle.Message);
+			return (successfully: false, errorMsg: e.Message, data: null);
 		}
-		catch (FileNotFoundException fnfe)
-		{
-			Console.WriteLine($"🛑 File {fileName} could not be found!");
-			Console.WriteLine(fnfe.Message);
-		}
-		catch (Exception exp)
-		{
-			Console.WriteLine($"🛑 Something went wrong, reading from data file {fileName}!");
-			Console.WriteLine(exp.Message);
-		}
-
-		return null;
+		// catch (FileLoadException fle)
+		// {
+		// 	Console.WriteLine($"🛑 File {fileName} could not be loaded!");
+		// 	Console.WriteLine(fle.Message);
+		// }
+		// catch (FileNotFoundException fnfe)
+		// {
+		// 	Console.WriteLine($"🛑 File {fileName} could not be found!");
+		// 	Console.WriteLine(fnfe.Message);
+		// }
+		// catch (Exception exp)
+		// {
+		// 	Console.WriteLine($"🛑 Something went wrong, reading from data file {fileName}!");
+		// 	Console.WriteLine(exp.Message);
+		// }
 	}
 
-	public static Vehicle[]? ReadFromVehiclesFile()
+	public static (bool successfully, string? errorMsg, Vehicle[]? data) ReadFromVehiclesFile()
 	{
-		return ReadFromFile<Vehicle>("VehiclesFileName");
+		return ReadFromFile<Vehicle>(VehiclesFileName);
 	}
 
 	public static (bool successfull, string? errorMsg) SaveToVehiclesFile(Vehicle[] data)
 	{
-		Console.WriteLine(data[0]);
-		Console.ReadLine();
 		return SaveToFile(JsonConvert.SerializeObject(data, JsonSettings), VehiclesFileName);
 	}
 
