@@ -1,0 +1,27 @@
+{
+  "$type": "JsonPackageSaveFile.Person.Person[], JsonPackageSaveFile",
+  "$values": [
+    {
+      "$type": "JsonPackageSaveFile.Person.Biker, JsonPackageSaveFile",
+      "NumberOfBikes": 2,
+      "Icon": "🚲",
+      "Name": "Boby B",
+      "Age": 36
+    },
+    {
+      "$type": "JsonPackageSaveFile.Person.Snowboarder, JsonPackageSaveFile",
+      "Icon": "🏂",
+      "FavouriteSnowboardBrand": "Capita",
+      "Name": "Boby J",
+      "Age": 31
+    },
+    {
+      "$type": "JsonPackageSaveFile.Person.Bmxer, JsonPackageSaveFile",
+      "Icon": "🚴‍♂️🤟",
+      "HasPegs": true,
+      "NumberOfBikes": 1,
+      "Name": "Bobby D",
+      "Age": 12
+    }
+  ]
+}
