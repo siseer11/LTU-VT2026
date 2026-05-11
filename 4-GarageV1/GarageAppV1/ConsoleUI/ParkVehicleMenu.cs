@@ -20,7 +20,7 @@ public class ParkVehicleMenu : Menu
 	public override void MenuHandler()
 	{
 		Console.Clear();
-		ConsoleUtils.DisplayMenuHeader(["🅿️  Garage", "(park a car)"], '-');
+		ConsoleUtils.DisplayMenuHeader(["🅿️  Garage", "(park a vehicle)"], '-');
 
 		// Check to see if there are any spots available
 		int numberOfAvailableSpots = App.NewGarage!.GetNumberOfEmptySpots();
@@ -28,7 +28,7 @@ public class ParkVehicleMenu : Menu
 		if (numberOfAvailableSpots == 0)
 		{
 			Console.WriteLine("\n");
-			ConsoleUtils.LogError("There are no empty spots available! Take some cars out first.\n");
+			ConsoleUtils.LogError("There are no empty spots available! Take some vehicles out first.\n");
 			PressToGoBackToGarageMenu();
 		}
 		else
@@ -81,7 +81,7 @@ public class ParkVehicleMenu : Menu
 				{
 					ConsoleUtils.LogSuccess($"{vehicleToPark.Icon} Vehicle with registration [{vehicleToPark.RegistrationNr}] was parked successfully!\n");
 					if (numberOfAvailableSpots == 1)
-						ConsoleUtils.LogWarning($"There are no more free spots in the garage now!");
+						ConsoleUtils.LogWarning($"There are no more available spots in the garage now!");
 				}
 				else
 				{
@@ -93,8 +93,5 @@ public class ParkVehicleMenu : Menu
 				PressToGoBackToGarageMenu();
 			}
 		}
-
-
-
 	}
 }

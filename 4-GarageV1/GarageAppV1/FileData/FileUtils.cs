@@ -97,4 +97,19 @@ public class FileUtils
 		return SaveToFile(JsonConvert.SerializeObject(data, JsonSettings), GarageFileName);
 	}
 
+	public static (bool successfull, string? errorMsg) DeleteGarageFile()
+	{
+		string filePath = Path.Combine(appDirectoryPath, $"{GarageFileName}.txt");
+
+		try
+		{
+			File.Delete(filePath);
+
+			return (successfull: true, errorMsg: null);
+		}
+		catch (Exception e)
+		{
+			return (successfull: false, errorMsg: e.Message);
+		}
+	}
 };

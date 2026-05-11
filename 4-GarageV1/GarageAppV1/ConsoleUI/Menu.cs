@@ -26,6 +26,12 @@ public abstract class Menu
 		NavigateToNewMenu(mainMenu);
 	}
 
+	public void NavigateToGarageMenu()
+	{
+		GarageMenu garageMenu = new();
+		NavigateToNewMenu(garageMenu);
+	}
+
 	/*
 	* This will be called while the menu is opened
 	* is the function that calls the UI + handlers for each option

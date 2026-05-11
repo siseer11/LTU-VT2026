@@ -24,6 +24,10 @@ public class App
 		NewGarage = new GarageClass(capacity, null);
 	}
 
+	public static void DeleteGarage()
+	{
+		NewGarage = null;
+	}
 	private static void PopulateGarageWithDataFromFile()
 	{
 		(bool successfully, string? errorMsg, var garageFileData) = FileUtils.ReadFromGarageFile();

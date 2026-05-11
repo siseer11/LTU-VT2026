@@ -10,11 +10,11 @@ public class GarageMenu : Menu
 	public GarageMenu()
 	{
 		MenuItems = [
-			(label: "1. Park car  ", value: ParkCarHandler),
-			(label: "2. Take car out ", value: () => Console.WriteLine("2")),
-			(label: "3. List all parked cars ", value: ListAllParkedCarsHandler),
-			(label: "4. Search parked car by registration number ", value: () => Console.WriteLine("4")),
-			(label: "5. Destroy garage ", value: () => Console.WriteLine("5")),
+			(label: "1. Park vehicle  ", value: ParkVehicleHandler),
+			(label: "2. Take vehicle out ", value: TakeVehicleOutHandler),
+			(label: "3. List all parked vehicles ", value: ListAllParkedVehiclesHandler),
+			// (label: "4. Search parked car by registration number ", value: () => Console.WriteLine("4")),
+			(label: "4. Destroy garage ", value: DestroyGarageHandler),
 			(label: "Main menu ", value: NavigateToMainMenu),
 			(label: "Close app ", value: CloseApp)
 		];
@@ -34,7 +34,7 @@ public class GarageMenu : Menu
 			Console.WriteLine("\n🧱 Building...");
 			Thread.Sleep(1000);
 			Console.WriteLine("");
-			ConsoleUtils.LogSuccess("Your garage is built! You can start park your cars now, enjoy!");
+			ConsoleUtils.LogSuccess("Your garage is built! You can start park your vehicles now, enjoy!");
 
 			App.CreateNewGarage(garageCapacity);
 			Console.WriteLine("\nPress any key to start using your garage!");
@@ -47,15 +47,27 @@ public class GarageMenu : Menu
 		}
 	}
 
-	private void ParkCarHandler()
+	private void ParkVehicleHandler()
 	{
 		ParkVehicleMenu parkVehicleMenu = new();
 		NavigateToNewMenu(parkVehicleMenu);
 	}
 
-	private void ListAllParkedCarsHandler()
+	private void ListAllParkedVehiclesHandler()
 	{
 		AllParkedCarsMenu allParkedCarsMenu = new();
 		NavigateToNewMenu(allParkedCarsMenu);
+	}
+
+	private void TakeVehicleOutHandler()
+	{
+		TakeVehicleOutMenu takeVehicleOutMenu = new();
+		NavigateToNewMenu(takeVehicleOutMenu);
+	}
+
+	private void DestroyGarageHandler()
+	{
+		DestroyGarageMenu destroyGarageMenu = new();
+		NavigateToNewMenu(destroyGarageMenu);
 	}
 }

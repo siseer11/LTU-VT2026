@@ -8,7 +8,7 @@ public class GarageClass
 {
 	public static readonly int MaxCapacity = 200;
 	public int GarageCapacity { get; private set; }
-	public readonly string?[] ParkingSpots; // save the Reg Nr in spots, or null for empty
+	private string?[] ParkingSpots { get; set; } // save the Reg Nr in spots, or null for empty
 
 	public bool CheckIfCarIsParkedByRegistrationNr(string registrationNr)
 	{
@@ -69,7 +69,7 @@ public class GarageClass
 			return (parkedSuccessfully: false, errorMessage: "No empty spots left!");
 		else
 		{
-			ParkingSpots[indexOfFirstEmptySpot] = vehicleRegistration;
+			ParkingSpots[indexOfFirstEmptySpot] = vehicleRegistration.ToUpper();
 
 			// TODO: Handle this better;
 			(bool dataSaveSuccessfullyToFile, string? dataSaveToFileError) = SyncFileWithLatestData();
@@ -82,6 +82,36 @@ public class GarageClass
 
 			return (parkedSuccessfully: true, errorMessage: null);
 		}
+	}
+
+	public (bool takenOutSuccessfully, string? errorMessage) TakeVehicleOut(string vehicleRegistration)
+	{
+		string vehicleRegistrationUpper = vehicleRegistration.ToUpper();
+		string?[] parkingSpotsCopy = [.. ParkingSpots];
+
+		parkingSpotsCopy = [.. parkingSpotsCopy.Where(p => p != vehicleRegistrationUpper)];
+
+		if (parkingSpotsCopy.Length == ParkingSpots.Length) // no vehicle removed, something went wrong
+		{
+			return (takenOutSuccessfully: false, errorMessage: $"No car with {vehicleRegistrationUpper} was found!");
+		}
+		else
+		{
+			// increase the size by 1, since we took one item out, keep the size equal
+			ParkingSpots = [.. parkingSpotsCopy, null];
+
+			// TODO: Handle this better;
+			(bool dataSaveSuccessfullyToFile, string? dataSaveToFileError) = SyncFileWithLatestData();
+			if (!dataSaveSuccessfullyToFile)
+			{
+				ConsoleUtils.LogError("Something went wrong when updating the database (file)");
+				if (dataSaveToFileError is not null)
+					ConsoleUtils.LogColor(dataSaveToFileError, ConsoleColor.Red);
+			}
+
+			return (takenOutSuccessfully: true, errorMessage: null);
+		}
+
 	}
 
 	public GarageClass(int garageCapacity, string[]? vehiclesInitialyParked)
