@@ -5,17 +5,12 @@ namespace GarageAppV1.ConsoleUI;
 
 public class AllParkedCarsMenu : Menu
 {
-	private void GoBackToGarageMenu()
-	{
-		GarageMenu garageMenu = new();
-		NavigateToNewMenu(garageMenu);
-	}
 	private void PressToGoBackToGarageMenu()
 	{
 		Console.WriteLine("Press anything to go back to garage menu.");
 		Console.ReadKey(true);
 
-		GoBackToGarageMenu();
+		NavigateToGarageMenu();
 	}
 
 	public override void MenuHandler()

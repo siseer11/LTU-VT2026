@@ -5,17 +5,12 @@ namespace GarageAppV1.ConsoleUI;
 
 public class TakeVehicleOutMenu : Menu
 {
-	private void GoBackToGarageMenu()
-	{
-		GarageMenu garageMenu = new();
-		NavigateToNewMenu(garageMenu);
-	}
 	private void PressToGoBackToGarageMenu()
 	{
 		Console.WriteLine("Press anything to go back to garage menu.");
 		Console.ReadKey(true);
 
-		GoBackToGarageMenu();
+		NavigateToGarageMenu();
 	}
 
 	public override void MenuHandler()
@@ -60,7 +55,7 @@ public class TakeVehicleOutMenu : Menu
 
 			if (registrationNumber.ToUpper() == "EXIT")
 			{
-				GoBackToGarageMenu();
+				NavigateToGarageMenu();
 			}
 
 			(bool takenOutSuccessfully, string? parkErrorMessage) = App.NewGarage!.TakeVehicleOut(registrationNumber);
