@@ -28,7 +28,7 @@ public class AllParkedCarsMenu : Menu
 
 		if (listOfParkedVehicles.Length == 0)
 		{
-			ConsoleUtils.LogColor("⚠️ There are no cars parked at the moment, bring some in.", ConsoleColor.Yellow);
+			ConsoleUtils.LogWarning("There are no vehicles parked at the moment, bring some in.");
 		}
 		else
 		{

@@ -8,14 +8,14 @@ public class GarageClass
 {
 	public static readonly int MaxCapacity = 200;
 	public int GarageCapacity { get; private set; }
-	public readonly Vehicle[] ParkingSpots;
+	public readonly string?[] ParkingSpots; // save the Reg Nr in spots, or null for empty
 
 	public bool CheckIfCarIsParkedByRegistrationNr(string registrationNr)
 	{
 		if (ParkingSpots is not null)
 		{
-			return ParkingSpots.Any((Vehicle? parkedVehicle) => (
-				parkedVehicle is not null ? parkedVehicle.RegistrationNr == registrationNr.ToUpper() : false
+			return ParkingSpots.Any((string? parkedVehicleRegistrationNr) => (
+				parkedVehicleRegistrationNr is not null ? parkedVehicleRegistrationNr == registrationNr.ToUpper() : false
 			));
 		}
 		else
@@ -24,7 +24,21 @@ public class GarageClass
 
 	public Vehicle[] GetListOfParkedCars()
 	{
-		return [.. ParkingSpots.Where(parkingSpot => parkingSpot == null)];
+		string[] listOfRegistrationNumbersForParkedCars = [.. ParkingSpots.Where(parkingSpot => parkingSpot != null)!];
+		int numberOfParkedVehicles = listOfRegistrationNumbersForParkedCars.Length;
+		if (numberOfParkedVehicles > 0)
+		{
+			Vehicle[] parkedVehicles = new Vehicle[numberOfParkedVehicles];
+			for (int i = 0; i < numberOfParkedVehicles; i++)
+			{
+				parkedVehicles[i] = VehiclesList.GetVehicleByRegistrationNumber(listOfRegistrationNumbersForParkedCars[i])!;
+			}
+			return parkedVehicles;
+		}
+		else
+		{
+			return [];
+		}
 	}
 
 	private (bool successfull, string? errorMsg) SyncFileWithLatestData()
@@ -36,7 +50,7 @@ public class GarageClass
 	{
 		int emptySpots = 0;
 
-		foreach (Vehicle? parkingSpot in ParkingSpots)
+		foreach (string? parkingSpot in ParkingSpots)
 		{
 			if (parkingSpot is null)
 			{
@@ -47,7 +61,7 @@ public class GarageClass
 		return emptySpots;
 	}
 
-	public (bool parkedSuccessfully, string? errorMessage) ParkVehicle(Vehicle vehicle)
+	public (bool parkedSuccessfully, string? errorMessage) ParkVehicle(string vehicleRegistration)
 	{
 		int indexOfFirstEmptySpot = Array.FindIndex(ParkingSpots, p => p == null);
 
@@ -55,7 +69,7 @@ public class GarageClass
 			return (parkedSuccessfully: false, errorMessage: "No empty spots left!");
 		else
 		{
-			ParkingSpots[indexOfFirstEmptySpot] = vehicle;
+			ParkingSpots[indexOfFirstEmptySpot] = vehicleRegistration;
 
 			// TODO: Handle this better;
 			(bool dataSaveSuccessfullyToFile, string? dataSaveToFileError) = SyncFileWithLatestData();
@@ -70,14 +84,14 @@ public class GarageClass
 		}
 	}
 
-	public GarageClass(int garageCapacity, Vehicle[]? vehiclesInitialyParked)
+	public GarageClass(int garageCapacity, string[]? vehiclesInitialyParked)
 	{
 		if (garageCapacity < 1 || garageCapacity > MaxCapacity)
 		{
 			throw new ArgumentOutOfRangeException($"The garage can not be built, the number of cars has to be between: 1-{MaxCapacity}");
 		}
 
-		ParkingSpots = new Vehicle[garageCapacity];
+		ParkingSpots = new string[garageCapacity];
 
 		if (vehiclesInitialyParked is not null)
 		{

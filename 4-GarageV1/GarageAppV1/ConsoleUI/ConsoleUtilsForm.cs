@@ -121,7 +121,7 @@ public partial class ConsoleUtils
 			if (errors.Length > 0)
 			{
 				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine($"⚠️  Fix these ({errors.Length}) errors before submiting  ⚠️");
+				LogWarning($"Fix these ({errors.Length}) errors before submiting  ⚠️");
 				foreach (string error in errors)
 				{
 					Console.WriteLine(error);

@@ -27,7 +27,8 @@ public class ParkVehicleMenu : Menu
 
 		if (numberOfAvailableSpots == 0)
 		{
-			ConsoleUtils.LogError("\n\nThere are no empty spots available! Take some cars out first.\n");
+			Console.WriteLine("\n");
+			ConsoleUtils.LogError("There are no empty spots available! Take some cars out first.\n");
 			PressToGoBackToGarageMenu();
 		}
 		else
@@ -39,7 +40,7 @@ public class ParkVehicleMenu : Menu
 
 			if (vehiclesThatAreNotParked.Length == 0)
 			{
-				ConsoleUtils.LogColor("\n\n⚠️ No cars that you can park, either all are parked, or you have to register some! ⚠️\n", ConsoleColor.Yellow);
+				ConsoleUtils.LogWarning("No cars that you can park, either all are parked, or you have to register some! ⚠️\n");
 				PressToGoBackToGarageMenu();
 			}
 			else
@@ -74,11 +75,13 @@ public class ParkVehicleMenu : Menu
 
 				// park the car
 				Vehicle vehicleToPark = VehiclesList.GetVehicleByRegistrationNumber(registrationNumber)!;
-				(bool parkedSuccessfully, string? parkErrorMessage) = App.NewGarage!.ParkVehicle(vehicleToPark);
+				(bool parkedSuccessfully, string? parkErrorMessage) = App.NewGarage!.ParkVehicle(registrationNumber);
 
 				if (parkedSuccessfully)
 				{
 					ConsoleUtils.LogSuccess($"{vehicleToPark.Icon} Vehicle with registration [{vehicleToPark.RegistrationNr}] was parked successfully!\n");
+					if (numberOfAvailableSpots == 1)
+						ConsoleUtils.LogWarning($"There are no more free spots in the garage now!");
 				}
 				else
 				{

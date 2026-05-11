@@ -28,6 +28,11 @@ public partial class ConsoleUtils
 		LogColor($"\n✅ {msg}", ConsoleColor.Green);
 	}
 
+	public static void LogWarning(string? msg = "Success!")
+	{
+		LogColor($"\n⚠️ {msg}", ConsoleColor.Yellow);
+	}
+
 	public static int GetValidInt(string? label = "Insert a number: ", string? errorMsg = "Wrong input, try again!", int? minValue = 0, int? maxValue = int.MaxValue)
 	{
 		Console.Write(label);

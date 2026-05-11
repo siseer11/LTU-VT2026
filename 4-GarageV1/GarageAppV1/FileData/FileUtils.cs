@@ -46,6 +46,12 @@ public class FileUtils
 
 		try
 		{
+			if (!File.Exists(filePath))
+			{
+				File.Create(filePath);
+				return (successfully: true, errorMsg: null, data: null);
+			}
+
 			string fileData = File.ReadAllText(filePath);
 			T[] deJsonified = JsonConvert.DeserializeObject<T[]>(fileData, JsonSettings)!;
 
@@ -82,11 +88,11 @@ public class FileUtils
 		return SaveToFile(JsonConvert.SerializeObject(data, JsonSettings), VehiclesFileName);
 	}
 
-	public static (bool successfully, string? errorMsg, Vehicle[]? data) ReadFromGarageFile()
+	public static (bool successfully, string? errorMsg, string[]? data) ReadFromGarageFile()
 	{
-		return ReadFromFile<Vehicle>(GarageFileName);
+		return ReadFromFile<string>(GarageFileName);
 	}
-	public static (bool successfull, string? errorMsg) SaveGarageDataToFile(Vehicle[] data)
+	public static (bool successfull, string? errorMsg) SaveGarageDataToFile(string?[] data)
 	{
 		return SaveToFile(JsonConvert.SerializeObject(data, JsonSettings), GarageFileName);
 	}

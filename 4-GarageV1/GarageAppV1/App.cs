@@ -46,8 +46,6 @@ public class App
 
 	public void Run()
 	{
-		Console.WriteLine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
-		Console.ReadLine();
 		// populate with data from files
 		Console.Clear();
 		Console.WriteLine("Cache data loaded status:");
