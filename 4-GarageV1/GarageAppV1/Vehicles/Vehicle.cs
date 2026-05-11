@@ -36,17 +36,9 @@ public abstract class Vehicle
 	public FuelTypeEnum? FuelType { get; set; }
 	public int? NumberOfSeats { get; set; }
 	public double? Length { get; set; }
-
-	public bool Parked { get; private set; } = false;
-
 	public string GetBasicDetailsString()
 	{
 		return $"{Icon} - [{RegistrationNr}] {Brand} {Model}";
-	}
-
-	public void SetParkedStatus(bool newStatus)
-	{
-		Parked = newStatus;
 	}
 
 	public Vehicle(string brand, string model, string registrationNr)

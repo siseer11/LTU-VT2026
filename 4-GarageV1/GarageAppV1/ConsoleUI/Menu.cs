@@ -11,7 +11,7 @@ public abstract class Menu
 
 	public static void CloseApp()
 	{
-		App.appRunning = false;
+		App.CloseApp();
 	}
 
 	public void NavigateToNewMenu(Menu NewMenu)
@@ -34,7 +34,7 @@ public abstract class Menu
 
 	public void Run()
 	{
-		while (Opened && App.appRunning)
+		while (Opened && App.AppRunning)
 		{
 			MenuHandler();
 		}

@@ -9,6 +9,7 @@ namespace GarageAppV1.FileData;
 public class FileUtils
 {
 	private static readonly string VehiclesFileName = "vehicles";
+	private static readonly string GarageFileName = "garage";
 	private static readonly string appDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GarageApp");
 	public static (bool successfull, string? errorMsg) SaveToFile(string data, string fileName)
 	{
@@ -79,6 +80,15 @@ public class FileUtils
 	public static (bool successfull, string? errorMsg) SaveToVehiclesFile(Vehicle[] data)
 	{
 		return SaveToFile(JsonConvert.SerializeObject(data, JsonSettings), VehiclesFileName);
+	}
+
+	public static (bool successfully, string? errorMsg, Vehicle[]? data) ReadFromGarageFile()
+	{
+		return ReadFromFile<Vehicle>(GarageFileName);
+	}
+	public static (bool successfull, string? errorMsg) SaveGarageDataToFile(Vehicle[] data)
+	{
+		return SaveToFile(JsonConvert.SerializeObject(data, JsonSettings), GarageFileName);
 	}
 
 };

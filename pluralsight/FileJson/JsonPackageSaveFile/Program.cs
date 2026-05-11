@@ -4,7 +4,7 @@ using JsonPackageSaveFile.Person;
 using Newtonsoft.Json;
 
 
-(string label, string value)[] options = [(label: "Brand:", value: ""), (label: "Year:", value: ""), (label: "Done", value: "")];
+(string label, string value, Func<string, (bool passed, string? errorMessage)>? valueCheck)[] options = [(label: "Brand:", value: "", valueCheck: null), (label: "Year:", value: "", valueCheck: null), (label: "Done", value: "", valueCheck: null)];
 string[] errors = [];
 
 bool userClosedIt = false;

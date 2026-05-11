@@ -110,6 +110,7 @@ public partial class ConsoleUtils
 		return KeyboardControllMenu(question, [(label: " YES ", value: true), (label: " NO ", value: false)]);
 	}
 
+
 	// Helper that displays the menu header with a "divider line" at top and bottom, to keep it in sync everywhere
 	public static void DisplayMenuHeader(string[] lines, char divider = '-')
 	{

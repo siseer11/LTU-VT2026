@@ -5,6 +5,17 @@ using GarageAppV1.FileData;
 
 namespace GarageAppV1.Vehicles;
 
+enum VehicleListTableColumns
+{
+	Registration,
+	Brand,
+	Model,
+	Color,
+	Year,
+	Parked,
+	Type
+}
+
 public class VehiclesList
 {
 	public static Vehicle[] Vehicles { get; private set; } = [];
@@ -33,6 +44,7 @@ public class VehiclesList
 		if (successfully && vehiclesListFromFile is not null)
 		{
 			Vehicles = vehiclesListFromFile;
+			ConsoleUtils.LogSuccess("Vehicles data populated successfully!");
 		}
 		else if (!successfully)
 		{
@@ -43,57 +55,80 @@ public class VehiclesList
 
 	}
 
-	public static void ListTableWithAllVehicles()
+	public static void RenderTableOfVehicles(Vehicle[] tableVehiclesList)
 	{
-		if (Vehicles.Length == 0)
+		if (tableVehiclesList.Length == 0)
 		{
-			Console.WriteLine("There are no vehicles registered 😢");
+			Console.WriteLine("No vehicles to be shown!");
 		}
 		else
 		{
 			int colGap = 4;
-			int typeColWidth = 4;
-			int registartionColWidth = 12;
-			int brandColWidth = 10;
-			int modelColWidth = 10;
-			int colorColWidth = 8;
-			int yearColWidth = 4;
-			int parkedColWidth = 6;
+			(VehicleListTableColumns id, int columnGap, int columnWidht)[] tableColumnSettings = [
+				(id: VehicleListTableColumns.Registration, columnGap: colGap, columnWidht: 12),
+				(id: VehicleListTableColumns.Brand, columnGap: colGap, columnWidht: 10),
+				(id: VehicleListTableColumns.Model, columnGap: colGap, columnWidht: 10),
+				(id: VehicleListTableColumns.Color, columnGap: colGap, columnWidht: 8),
+				(id: VehicleListTableColumns.Year, columnGap: colGap, columnWidht: 4),
+				(id: VehicleListTableColumns.Parked, columnGap: colGap, columnWidht: 6),
+				(id: VehicleListTableColumns.Type, columnGap: 1, columnWidht: 4),
+			];
 
-			StringBuilder header = new();
-			header.Append(ReturnValueOfSize("Registration", registartionColWidth, colGap));
-			header.Append(ReturnValueOfSize("Brand", brandColWidth, colGap));
-			header.Append(ReturnValueOfSize("Model", modelColWidth, colGap));
-			header.Append(ReturnValueOfSize("Color", colorColWidth, colGap));
-			header.Append(ReturnValueOfSize("Year", yearColWidth, colGap));
-			header.Append(ReturnValueOfSize("Parked", parkedColWidth, colGap));
-			header.Append(ReturnValueOfSize("Type", typeColWidth, 1));
-			Console.BackgroundColor = ConsoleColor.White;
-			Console.ForegroundColor = ConsoleColor.Black;
-			Console.WriteLine(header.ToString());
-			Console.ResetColor();
+			List<Dictionary<VehicleListTableColumns, string>> tableRows = [];
 
-			for (int i = 0; i < Vehicles.Length; i++)
+			Dictionary<VehicleListTableColumns, string> tableHeader = new()
 			{
-				Vehicle vehicle = Vehicles[i];
-				// if (i % 2 == 0)
-				// {
-				// 	Console.BackgroundColor = ConsoleColor.Gray;
-				// 	Console.ForegroundColor = ConsoleColor.Black;
-				// }
-				StringBuilder vehicleRow = new();
-				vehicleRow.Append(ReturnValueOfSize(vehicle.RegistrationNr, registartionColWidth, colGap));
-				vehicleRow.Append(ReturnValueOfSize(vehicle.Brand, brandColWidth, colGap));
-				vehicleRow.Append(ReturnValueOfSize(vehicle.Model, modelColWidth, colGap));
-				vehicleRow.Append(ReturnValueOfSize(vehicle.Color is not null ? vehicle.Color : "-", colorColWidth, colGap));
-				vehicleRow.Append(ReturnValueOfSize(vehicle.ManufacturingYear is not null ? vehicle.ManufacturingYear.ToString()! : "-", yearColWidth, colGap));
-				vehicleRow.Append(ReturnValueOfSize(vehicle.Parked ? "Yes" : "No", parkedColWidth, colGap));
-				vehicleRow.Append(ReturnValueOfSize(vehicle.Icon, typeColWidth, 1));
-				Console.WriteLine(vehicleRow.ToString());
-				// Console.ResetColor();
+				{VehicleListTableColumns.Registration, "Registration"},
+				{VehicleListTableColumns.Brand, "Brand"},
+				{VehicleListTableColumns.Model, "Model"},
+				{VehicleListTableColumns.Color, "Color"},
+				{VehicleListTableColumns.Year, "Year"},
+				{VehicleListTableColumns.Parked, "Parked"},
+				{VehicleListTableColumns.Type, "Type"},
+			};
+			tableRows.Add(tableHeader);
+
+			// go over each vehicle and generate "a row" for the Table
+			for (int i = 0; i < tableVehiclesList.Length; i++)
+			{
+				Vehicle vehicle = tableVehiclesList[i];
+
+				bool isCarParked = false;
+				if (App.NewGarage is not null)
+					isCarParked = App.NewGarage.CheckIfCarIsParkedByRegistrationNr(vehicle.RegistrationNr);
+
+				Dictionary<VehicleListTableColumns, string> carRow = new()
+				{
+					{VehicleListTableColumns.Registration, vehicle.RegistrationNr},
+					{VehicleListTableColumns.Brand, vehicle.Brand},
+					{VehicleListTableColumns.Model, vehicle.Model},
+					{VehicleListTableColumns.Color, vehicle.Color is not null ? vehicle.Color : "-"},
+					{VehicleListTableColumns.Year, vehicle.ManufacturingYear is not null ? vehicle.ManufacturingYear.ToString()! : "-"},
+					{VehicleListTableColumns.Parked, isCarParked ? "Yes" : "No"},
+					{VehicleListTableColumns.Type, vehicle.Icon},
+				};
+
+				tableRows.Add(carRow);
 			}
+
+			ConsoleUtils.RenderTable<VehicleListTableColumns>(tableColumnSettings, tableRows, showLinesInBetween: true);
 		}
 
+	}
+
+	public static Vehicle[] GetListOfVehiclesWithFilter(Func<Vehicle, bool> filter)
+	{
+		return [.. Vehicles.Where(v => filter(v))];
+	}
+
+	public static void ListTableWithAllVehicles()
+	{
+		RenderTableOfVehicles(Vehicles);
+	}
+
+	public static Vehicle? GetVehicleByRegistrationNumber(string registrationNumber)
+	{
+		return Vehicles.FirstOrDefault(v => v.RegistrationNr == registrationNumber.ToUpper());
 	}
 
 	public static (bool savedSuccessfully, string? errorUserMsg, string? errorDetails) AddVehicle(Vehicle newVehicle)
