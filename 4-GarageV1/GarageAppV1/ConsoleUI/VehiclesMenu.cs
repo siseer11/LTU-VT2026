@@ -9,6 +9,7 @@ public class VehiclesMenu : Menu
 		MenuItems = [
 			(label: "1. Register new ", value: RegisterNewHandler),
 			(label: "2. List all ", value: ListAllVehiclesHandler),
+			(label: "3. Vehicle full details (by registration number) ", value: VehicleFullDetailsHandler),
 			(label: "Main menu ", value: NavigateToMainMenu),
 			(label: "Close app ", value: CloseApp)
 		 ];
@@ -32,5 +33,11 @@ public class VehiclesMenu : Menu
 	{
 		ListAllVehiclesMenu listAllVehiclesMenu = new();
 		NavigateToNewMenu(listAllVehiclesMenu);
+	}
+
+	private void VehicleFullDetailsHandler()
+	{
+		VehicleFullDetailsMenu vehicleFullDetailsMenu = new();
+		NavigateToNewMenu(vehicleFullDetailsMenu);
 	}
 }

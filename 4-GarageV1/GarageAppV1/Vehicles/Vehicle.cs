@@ -98,6 +98,10 @@ public abstract class Vehicle
 		return $"{Icon} - [{RegistrationNr}] {Brand} {Model}";
 	}
 
+	public string GetVehicleDetailsString()
+	{
+		return $"Year: {ManufacturingYear?.ToString() ?? "-"} | Color: {Color ?? "-"} | NumberOfEngines: {NumberOfEngines?.ToString() ?? "-"} | FuelType: {FuelType.ToString() ?? "-"} | NumberOfSeats: {NumberOfSeats?.ToString() ?? "-"} | Length: {Length?.ToString() ?? "-"}";
+	}
 	public Vehicle(string brand, string model, string registrationNr)
 	{
 		#region checks for input values

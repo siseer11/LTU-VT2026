@@ -55,6 +55,10 @@ public class VehiclesList
 
 	}
 
+	public static int GetNumberOfRegisteredVehicles()
+	{
+		return Vehicles.Length;
+	}
 	public static void RenderTableOfVehicles(Vehicle[] tableVehiclesList)
 	{
 		if (tableVehiclesList.Length == 0)
