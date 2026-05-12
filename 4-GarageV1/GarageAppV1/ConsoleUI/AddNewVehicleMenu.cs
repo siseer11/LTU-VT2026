@@ -1,11 +1,10 @@
 using System;
-using System.Drawing;
 using GarageAppV1.Shared;
 using GarageAppV1.Vehicles;
 
 namespace GarageAppV1.ConsoleUI;
 
-public class AddNewCarMenu : Menu
+public class AddNewVehicleMenu : Menu
 {
 	public override void MenuHandler()
 	{

@@ -10,7 +10,7 @@ public class GarageClass
 	public int GarageCapacity { get; private set; }
 	private string?[] ParkingSpots { get; set; } // save the Reg Nr in spots, or null for empty
 
-	public bool CheckIfCarIsParkedByRegistrationNr(string registrationNr)
+	public bool CheckIfVehicleIsParkedByRegistrationNr(string registrationNr)
 	{
 		if (ParkingSpots is not null)
 		{
@@ -22,16 +22,16 @@ public class GarageClass
 			return false;
 	}
 
-	public Vehicle[] GetListOfParkedCars()
+	public Vehicle[] GetListOfParkedVehicles()
 	{
-		string[] listOfRegistrationNumbersForParkedCars = [.. ParkingSpots.Where(parkingSpot => parkingSpot != null)!];
-		int numberOfParkedVehicles = listOfRegistrationNumbersForParkedCars.Length;
+		string[] listOfRegistrationNumbersForParkedVehicles = [.. ParkingSpots.Where(parkingSpot => parkingSpot != null)!];
+		int numberOfParkedVehicles = listOfRegistrationNumbersForParkedVehicles.Length;
 		if (numberOfParkedVehicles > 0)
 		{
 			Vehicle[] parkedVehicles = new Vehicle[numberOfParkedVehicles];
 			for (int i = 0; i < numberOfParkedVehicles; i++)
 			{
-				parkedVehicles[i] = VehiclesList.GetVehicleByRegistrationNumber(listOfRegistrationNumbersForParkedCars[i])!;
+				parkedVehicles[i] = VehiclesList.GetVehicleByRegistrationNumber(listOfRegistrationNumbersForParkedVehicles[i])!;
 			}
 			return parkedVehicles;
 		}
@@ -93,7 +93,7 @@ public class GarageClass
 
 		if (parkingSpotsCopy.Length == ParkingSpots.Length) // no vehicle removed, something went wrong
 		{
-			return (takenOutSuccessfully: false, errorMessage: $"No car with {vehicleRegistrationUpper} was found!");
+			return (takenOutSuccessfully: false, errorMessage: $"No vehicle with {vehicleRegistrationUpper} was found!");
 		}
 		else
 		{
@@ -118,7 +118,7 @@ public class GarageClass
 	{
 		if (garageCapacity < 1 || garageCapacity > MaxCapacity)
 		{
-			throw new ArgumentOutOfRangeException($"The garage can not be built, the number of cars has to be between: 1-{MaxCapacity}");
+			throw new ArgumentOutOfRangeException($"The garage can not be built, the number of vehicles has to be between: 1-{MaxCapacity}");
 		}
 
 		ParkingSpots = new string[garageCapacity];
@@ -127,7 +127,7 @@ public class GarageClass
 		{
 			if (vehiclesInitialyParked.Length > garageCapacity) // THis should be impossible, only if user changes the data files should happen
 			{
-				ConsoleUtils.LogError("Fatal error! More cars than the garage limit!");
+				ConsoleUtils.LogError("Fatal error! More vehicles than the garage limit!");
 				Console.ReadKey(true);
 				App.CloseApp();
 			}

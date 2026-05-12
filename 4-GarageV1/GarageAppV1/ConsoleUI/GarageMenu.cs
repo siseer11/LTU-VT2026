@@ -55,8 +55,8 @@ public class GarageMenu : Menu
 
 	private void ListAllParkedVehiclesHandler()
 	{
-		AllParkedCarsMenu allParkedCarsMenu = new();
-		NavigateToNewMenu(allParkedCarsMenu);
+		AllParkedVehiclesMenu allParkedVehiclesMenu = new();
+		NavigateToNewMenu(allParkedVehiclesMenu);
 	}
 
 	private void TakeVehicleOutHandler()

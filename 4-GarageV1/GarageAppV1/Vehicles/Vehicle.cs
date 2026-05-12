@@ -46,7 +46,7 @@ public abstract class Vehicle
 		string registrationNrAllUpper = registrationNr.ToUpper();
 		if (VehiclesList.RegistrationNrAlreadyUsed(registrationNrAllUpper))
 		{
-			throw new Exception("Registration number must be unique! Failed to register car.");
+			throw new Exception("Registration number must be unique! Failed to register vehicle.");
 		}
 
 		RegistrationNr = registrationNrAllUpper;

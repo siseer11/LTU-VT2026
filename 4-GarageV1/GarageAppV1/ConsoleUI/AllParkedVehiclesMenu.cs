@@ -3,7 +3,7 @@ using GarageAppV1.Vehicles;
 
 namespace GarageAppV1.ConsoleUI;
 
-public class AllParkedCarsMenu : Menu
+public class AllParkedVehiclesMenu : Menu
 {
 	private void PressToGoBackToGarageMenu()
 	{
@@ -18,8 +18,8 @@ public class AllParkedCarsMenu : Menu
 		Console.Clear();
 		ConsoleUtils.DisplayMenuHeader(["🅿️  Garage", "(all currently parked vehicles)"], '-');
 
-		// get the list of parked cars
-		Vehicle[] listOfParkedVehicles = App.NewGarage!.GetListOfParkedCars();
+		// get the list of parked vehicles
+		Vehicle[] listOfParkedVehicles = App.NewGarage!.GetListOfParkedVehicles();
 
 		if (listOfParkedVehicles.Length == 0)
 		{

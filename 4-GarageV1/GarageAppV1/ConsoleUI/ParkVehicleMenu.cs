@@ -31,20 +31,20 @@ public class ParkVehicleMenu : Menu
 			ConsoleUtils.LogColor($"\nThere are {numberOfAvailableSpots} available spot(s). Welcome in.", ConsoleColor.Green);
 
 
-			Vehicle[] vehiclesThatAreNotParked = VehiclesList.GetListOfVehiclesWithFilter(filter: (vehicle) => !App.NewGarage!.CheckIfCarIsParkedByRegistrationNr(vehicle.RegistrationNr));
+			Vehicle[] vehiclesThatAreNotParked = VehiclesList.GetListOfVehiclesWithFilter(filter: (vehicle) => !App.NewGarage!.CheckIfVehicleIsParkedByRegistrationNr(vehicle.RegistrationNr));
 
 			if (vehiclesThatAreNotParked.Length == 0)
 			{
-				ConsoleUtils.LogWarning("No cars that you can park, either all are parked, or you have to register some! ⚠️\n");
+				ConsoleUtils.LogWarning("No vehicles that you can park, either all are parked, or you have to register some! ⚠️\n");
 				PressToGoBackToGarageMenu();
 			}
 			else
 			{
-				Console.WriteLine("\nList of cars you can park:\n");
+				Console.WriteLine("\nList of vehicles you can park:\n");
 				VehiclesList.RenderTableOfVehicles(vehiclesThatAreNotParked);
 
 				#region Get valid reg nr from input
-				Console.WriteLine("\n\nType the registration number of the car you want to park (or 'Exit' to go back): ");
+				Console.WriteLine("\n\nType the registration number of the vehicle you want to park (or 'Exit' to go back): ");
 				string? registrationNumber = Console.ReadLine();
 
 
@@ -53,12 +53,12 @@ public class ParkVehicleMenu : Menu
 						string.IsNullOrEmpty(registrationNumber) ||
 						registrationNumber.Length != 6 ||
 						VehiclesList.GetVehicleByRegistrationNumber(registrationNumber) is null ||
-						App.NewGarage!.CheckIfCarIsParkedByRegistrationNr(registrationNumber)
+						App.NewGarage!.CheckIfVehicleIsParkedByRegistrationNr(registrationNumber)
 					)
 				)
 				{
 					ConsoleUtils.LogError("Invalid registration number!");
-					ConsoleUtils.LogColor("(The registration number must have 6 characters, the car must exist and not be parked) Try again:", ConsoleColor.Red);
+					ConsoleUtils.LogColor("(The registration number must have 6 characters, the vehicle must exist and not be parked) Try again:", ConsoleColor.Red);
 					registrationNumber = Console.ReadLine();
 				}
 				#endregion
@@ -69,7 +69,7 @@ public class ParkVehicleMenu : Menu
 				}
 				else
 				{
-					// park the car
+					// park the vehicle
 					Vehicle vehicleToPark = VehiclesList.GetVehicleByRegistrationNumber(registrationNumber)!;
 					(bool parkedSuccessfully, string? parkErrorMessage) = App.NewGarage!.ParkVehicle(registrationNumber);
 

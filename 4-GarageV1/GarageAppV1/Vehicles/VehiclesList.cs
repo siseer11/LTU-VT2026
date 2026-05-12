@@ -93,22 +93,22 @@ public class VehiclesList
 			{
 				Vehicle vehicle = tableVehiclesList[i];
 
-				bool isCarParked = false;
+				bool isVehicleParked = false;
 				if (App.NewGarage is not null)
-					isCarParked = App.NewGarage.CheckIfCarIsParkedByRegistrationNr(vehicle.RegistrationNr);
+					isVehicleParked = App.NewGarage.CheckIfVehicleIsParkedByRegistrationNr(vehicle.RegistrationNr);
 
-				Dictionary<VehicleListTableColumns, string> carRow = new()
+				Dictionary<VehicleListTableColumns, string> vehicleRow = new()
 				{
 					{VehicleListTableColumns.Registration, vehicle.RegistrationNr},
 					{VehicleListTableColumns.Brand, vehicle.Brand},
 					{VehicleListTableColumns.Model, vehicle.Model},
 					{VehicleListTableColumns.Color, vehicle.Color is not null ? vehicle.Color : "-"},
 					{VehicleListTableColumns.Year, vehicle.ManufacturingYear is not null ? vehicle.ManufacturingYear.ToString()! : "-"},
-					{VehicleListTableColumns.Parked, isCarParked ? "Yes" : "No"},
+					{VehicleListTableColumns.Parked, isVehicleParked ? "Yes" : "No"},
 					{VehicleListTableColumns.Type, vehicle.Icon},
 				};
 
-				tableRows.Add(carRow);
+				tableRows.Add(vehicleRow);
 			}
 
 			ConsoleUtils.RenderTable<VehicleListTableColumns>(tableColumnSettings, tableRows, showLinesInBetween: true);

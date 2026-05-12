@@ -18,24 +18,24 @@ public class TakeVehicleOutMenu : Menu
 		Console.Clear();
 		ConsoleUtils.DisplayMenuHeader(["🅿️  Garage", "(take a vehicle out)"], '-');
 		// Check to see if there are any spots available
-		Vehicle[] listOfPakedVehicles = App.NewGarage!.GetListOfParkedCars();
+		Vehicle[] listOfPakedVehicles = App.NewGarage!.GetListOfParkedVehicles();
 		int numberOfVehiclesInGarage = listOfPakedVehicles.Length;
 
 		if (numberOfVehiclesInGarage == 0)
 		{
 			Console.WriteLine("\n");
-			ConsoleUtils.LogError("There are no parked cars! Bring some in!.\n");
+			ConsoleUtils.LogError("There are no parked vehicles! Bring some in!.\n");
 			PressToGoBackToGarageMenu();
 		}
 		else
 		{
 			ConsoleUtils.LogColor($"\nThere are {numberOfVehiclesInGarage} vehicle(s). Take one out!", ConsoleColor.Green);
 
-			Console.WriteLine("\nList of currently parked cars:\n");
+			Console.WriteLine("\nList of currently parked vehicles:\n");
 			VehiclesList.RenderTableOfVehicles(listOfPakedVehicles);
 
 			#region Get valid reg nr from input
-			Console.WriteLine("\n\nType the registration number of the car you want to take out (or 'Exit' to go back): ");
+			Console.WriteLine("\n\nType the registration number of the vehicle you want to take out (or 'Exit' to go back): ");
 			string? registrationNumber = Console.ReadLine();
 
 			while (
@@ -48,7 +48,7 @@ public class TakeVehicleOutMenu : Menu
 			)
 			{
 				ConsoleUtils.LogError("Invalid registration number!");
-				ConsoleUtils.LogColor("(The registration number must have 6 characters, the car must exist and be parked) Try again:", ConsoleColor.Red);
+				ConsoleUtils.LogColor("(The registration number must have 6 characters, the vehicle must exist and be parked) Try again:", ConsoleColor.Red);
 				registrationNumber = Console.ReadLine();
 			}
 			#endregion

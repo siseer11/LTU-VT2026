@@ -3,7 +3,6 @@ namespace GarageAppV1.ConsoleUI;
 public class VehiclesMenu : Menu
 {
 	private (string label, Action value)[] MenuItems { get; set; } = [];
-	private bool AddNewCarFormOpened { get; set; } = false;
 
 	public VehiclesMenu()
 	{
@@ -25,8 +24,8 @@ public class VehiclesMenu : Menu
 
 	private void RegisterNewHandler()
 	{
-		AddNewCarMenu addNewCarMenu = new();
-		NavigateToNewMenu(addNewCarMenu);
+		AddNewVehicleMenu addNewVehicleMenu = new();
+		NavigateToNewMenu(addNewVehicleMenu);
 	}
 
 	private void ListAllVehiclesHandler()
