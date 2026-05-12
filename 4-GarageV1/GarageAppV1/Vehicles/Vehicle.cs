@@ -12,14 +12,20 @@ public abstract class Vehicle
 	public string RegistrationNr { get; }
 	private int? _manufacturingYear;
 	private string? _color;
+	private FuelTypeEnum? _fuelType;
+	private int? _numberOfSeats;
+	private int? _numberOfEngines;
+	private double? _length;
 
 	public int? ManufacturingYear
 	{
-		get => _manufacturingYear; set
+		get => _manufacturingYear;
+		set
 		{
-			int currentYear = DateTime.Now.Year;
-			if (value is not null && (value < 1500 || value > currentYear))
-				throw new ArgumentException($"ManufacturingYear must be between 1500 - {currentYear}!");
+			(bool yearPassed, string? yearErrorMessage) = CheckYearValue(value?.ToString());
+
+			if (!yearPassed)
+				throw new ArgumentException(yearErrorMessage);
 
 			_manufacturingYear = value;
 		}
@@ -29,13 +35,64 @@ public abstract class Vehicle
 		get => _color;
 		set
 		{
+			(bool colorPassed, string? colorErrorMessage) = CheckColorValue(value?.ToString());
+			if (!colorPassed)
+				throw new ArgumentException(colorErrorMessage);
+
 			_color = string.IsNullOrEmpty(value) ? null : value;
 		}
 	}
-	public int? NumberOfEngines { get; set; }
-	public FuelTypeEnum? FuelType { get; set; }
-	public int? NumberOfSeats { get; set; }
-	public double? Length { get; set; }
+	public int? NumberOfEngines
+	{
+		get => _numberOfEngines;
+		set
+		{
+			(bool numberOfEnginesPassed, string? numberOfEnginesErrorMessage) = CheckNumberOfEngines(value?.ToString());
+
+			if (!numberOfEnginesPassed)
+				throw new ArgumentException(numberOfEnginesErrorMessage);
+
+			_numberOfEngines = value;
+		}
+	}
+	public FuelTypeEnum? FuelType
+	{
+		get => _fuelType;
+		set
+		{
+			(bool fuelTypePassed, string? fuelTypeErrorMessage) = CheckFuelType(value?.ToString());
+			if (!fuelTypePassed)
+				throw new ArgumentException(fuelTypeErrorMessage);
+
+			_fuelType = value;
+		}
+	}
+	public int? NumberOfSeats
+	{
+		get => _numberOfSeats;
+		set
+		{
+			(bool nrOfSeatsPassed, string? nrOfSeatsErrorMessage) = CheckNumberOfSeats(value?.ToString());
+
+			if (!nrOfSeatsPassed)
+				throw new ArgumentException(nrOfSeatsErrorMessage);
+
+			_numberOfSeats = value;
+		}
+	}
+	public double? Length
+	{
+		get => _length;
+		set
+		{
+			(bool lengthPassed, string? lengthErrorMessage) = CheckLength(value?.ToString());
+
+			if (!lengthPassed)
+				throw new ArgumentException(lengthErrorMessage);
+
+			_length = value;
+		}
+	}
 	public string GetBasicDetailsString()
 	{
 		return $"{Icon} - [{RegistrationNr}] {Brand} {Model}";
@@ -43,13 +100,27 @@ public abstract class Vehicle
 
 	public Vehicle(string brand, string model, string registrationNr)
 	{
-		string registrationNrAllUpper = registrationNr.ToUpper();
-		if (VehiclesList.RegistrationNrAlreadyUsed(registrationNrAllUpper))
+		#region checks for input values
+		(bool regNrPassed, string? regNrErrorMessage) = CheckRegistrationNumber(registrationNr);
+		if (!regNrPassed)
 		{
-			throw new Exception("Registration number must be unique! Failed to register vehicle.");
+			throw new Exception(regNrErrorMessage);
 		}
 
-		RegistrationNr = registrationNrAllUpper;
+		(bool brandPassed, string? brandErrorMessage) = CheckBrandValue(brand);
+		if (!brandPassed)
+		{
+			throw new Exception(brandErrorMessage);
+		}
+
+		(bool modelPassed, string? modelErrorMessage) = CheckModelValue(model);
+		if (!modelPassed)
+		{
+			throw new Exception(modelErrorMessage);
+		}
+		#endregion
+
+		RegistrationNr = registrationNr.ToUpper();
 		Brand = brand;
 		Model = model;
 	}
@@ -71,7 +142,7 @@ public abstract class Vehicle
 			return (passed: true, errorMessage: null);
 	}
 
-	protected static (bool passed, string? errorMessage) CheckYearValue(string text)
+	protected static (bool passed, string? errorMessage) CheckYearValue(string? text)
 	{
 		if (string.IsNullOrEmpty(text))
 			return (passed: true, errorMessage: null);
@@ -94,7 +165,7 @@ public abstract class Vehicle
 			return (passed: true, errorMessage: null);
 	}
 
-	protected static (bool passed, string? errorMessage) CheckColorValue(string text)
+	protected static (bool passed, string? errorMessage) CheckColorValue(string? text)
 	{
 		// since is not an require field, pass it if its empty
 		if (string.IsNullOrEmpty(text))
@@ -106,7 +177,7 @@ public abstract class Vehicle
 			return (passed: true, errorMessage: null);
 	}
 
-	protected static (bool passed, string? errorMessage) CheckNumberOfEngines(string text)
+	protected static (bool passed, string? errorMessage) CheckNumberOfEngines(string? text)
 	{
 		// since is not an require field, pass it if its empty
 		if (string.IsNullOrEmpty(text))
@@ -118,7 +189,7 @@ public abstract class Vehicle
 			return (passed: true, errorMessage: null);
 	}
 
-	protected static (bool passed, string? errorMessage) CheckFuelType(string text)
+	protected static (bool passed, string? errorMessage) CheckFuelType(string? text)
 	{
 		// since is not an require field, pass it if its empty
 		if (string.IsNullOrEmpty(text))
@@ -142,7 +213,7 @@ public abstract class Vehicle
 			return (passed: true, errorMessage: null);
 	}
 
-	protected static (bool passed, string? errorMessage) CheckNumberOfSeats(string text)
+	protected static (bool passed, string? errorMessage) CheckNumberOfSeats(string? text)
 	{
 		// since is not an require field, pass it if its empty
 		if (string.IsNullOrEmpty(text))
@@ -154,7 +225,7 @@ public abstract class Vehicle
 			return (passed: true, errorMessage: null);
 	}
 
-	protected static (bool passed, string? errorMessage) CheckLength(string text)
+	protected static (bool passed, string? errorMessage) CheckLength(string? text)
 	{
 		// since is not an require field, pass it if its empty
 		if (string.IsNullOrEmpty(text))
@@ -181,14 +252,6 @@ public abstract class Vehicle
 		(label: "Number of seats:", value: "", required: false, valueCheck: CheckNumberOfSeats),
 		(label: "Length:", value: "", required: false, valueCheck: CheckLength),
 	];
-
-	public static void LogShit()
-	{
-		foreach (var item in VehicleFormOptions)
-		{
-			Console.WriteLine($"{item.label}: {item.value}");
-		}
-	}
 
 	// Override these in each vehicle, as needed using the "new" keyword instead of "overrite"
 	public static FormOptionsType GetFormOptionsByVehicleType(VehicleTypes vehicleType)

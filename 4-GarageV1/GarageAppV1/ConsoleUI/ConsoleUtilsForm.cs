@@ -120,13 +120,11 @@ public partial class ConsoleUtils
 			Console.WriteLine("\n-----------------------------------");
 			if (errors.Length > 0)
 			{
-				Console.ForegroundColor = ConsoleColor.Red;
-				LogWarning($"Fix these ({errors.Length}) errors before submiting  ⚠️");
+				LogError($"Fix these ({errors.Length}) errors before submiting");
 				foreach (string error in errors)
 				{
-					Console.WriteLine(error);
+					LogColor(error, ConsoleColor.Red);
 				}
-				Console.ResetColor();
 				Console.WriteLine("");
 			}
 			LogColor("(🤖 How to use:\n- Press enter to start/end editing\n- Press Tab/Arrows to navigate\n- (*) Marked fields are required)", ConsoleColor.DarkGray);
