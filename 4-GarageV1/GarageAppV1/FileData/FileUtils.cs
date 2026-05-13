@@ -11,8 +11,15 @@ public class FileUtils
 	private static readonly string VehiclesFileName = "vehicles";
 	private static readonly string GarageFileName = "garage";
 	private static readonly string appDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GarageApp");
+	#region Base methods
 	public static (bool successfull, string? errorMsg) SaveToFile(string data, string fileName)
 	{
+		// If the app does not have "cacheEnabled" don't even try to save
+		if (!App.CacheEnabled)
+		{
+			return (successfull: true, errorMsg: null);
+		}
+
 		try
 		{
 			// check if the directory exists, create it if not
@@ -42,13 +49,19 @@ public class FileUtils
 
 	public static (bool successfully, string? errorMsg, T[]? data) ReadFromFile<T>(string fileName)
 	{
+		// If the app does not have "cacheEnabled" don't even try to save
+		if (!App.CacheEnabled)
+		{
+			return (successfully: true, errorMsg: null, data: null);
+		}
+
 		string filePath = Path.Combine(appDirectoryPath, $"{fileName}.txt");
 
 		try
 		{
 			if (!File.Exists(filePath))
 			{
-				File.Create(filePath);
+				// File.Create(filePath);
 				return (successfully: true, errorMsg: null, data: null);
 			}
 
@@ -78,6 +91,24 @@ public class FileUtils
 		// }
 	}
 
+	public static (bool successfull, string? errorMsg) DeleteFile(string fileName)
+	{
+		string filePath = Path.Combine(appDirectoryPath, $"{fileName}.txt");
+
+		try
+		{
+			File.Delete(filePath);
+
+			return (successfull: true, errorMsg: null);
+		}
+		catch (Exception e)
+		{
+			return (successfull: false, errorMsg: e.Message);
+		}
+	}
+	#endregion
+
+	#region Specialized methods
 	public static (bool successfully, string? errorMsg, Vehicle[]? data) ReadFromVehiclesFile()
 	{
 		return ReadFromFile<Vehicle>(VehiclesFileName);
@@ -96,20 +127,9 @@ public class FileUtils
 	{
 		return SaveToFile(JsonConvert.SerializeObject(data, JsonSettings), GarageFileName);
 	}
-
 	public static (bool successfull, string? errorMsg) DeleteGarageFile()
 	{
-		string filePath = Path.Combine(appDirectoryPath, $"{GarageFileName}.txt");
-
-		try
-		{
-			File.Delete(filePath);
-
-			return (successfull: true, errorMsg: null);
-		}
-		catch (Exception e)
-		{
-			return (successfull: false, errorMsg: e.Message);
-		}
+		return DeleteFile(GarageFileName);
 	}
+	#endregion
 };

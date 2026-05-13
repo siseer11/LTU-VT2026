@@ -37,22 +37,17 @@ public class VehiclesList
 		return $"{trimmed}{new string(' ', paddingRight + (size - trimmed.Length))}";
 	}
 
-	public static void PopulateWithDataFromFile()
+	public static (bool successfully, string? errorMsg) PopulateWithDataFromFile()
 	{
 		(bool successfully, string? errorMsg, var vehiclesListFromFile) = FileUtils.ReadFromVehiclesFile();
 
 		if (successfully && vehiclesListFromFile is not null)
 		{
 			Vehicles = vehiclesListFromFile;
-			ConsoleUtils.LogSuccess("Vehicles data populated successfully!");
-		}
-		else if (!successfully)
-		{
-			ConsoleUtils.LogError("Could not update the vehicles list with the data from file!");
-			if (!string.IsNullOrEmpty(errorMsg))
-				ConsoleUtils.LogColor($"({errorMsg})", ConsoleColor.Red);
+			// ConsoleUtils.LogSuccess("Vehicles data populated successfully!");
 		}
 
+		return (successfully, errorMsg);
 	}
 
 	public static int GetNumberOfRegisteredVehicles()
@@ -63,7 +58,7 @@ public class VehiclesList
 	{
 		if (tableVehiclesList.Length == 0)
 		{
-			Console.WriteLine("No vehicles to be shown!");
+			ConsoleUtils.LogWarning("There are no registered vehicles! Start by adding some first.");
 		}
 		else
 		{

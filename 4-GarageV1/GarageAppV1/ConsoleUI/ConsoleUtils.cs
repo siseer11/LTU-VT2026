@@ -30,7 +30,7 @@ public partial class ConsoleUtils
 
 	public static void LogWarning(string? msg = "Success!")
 	{
-		LogColor($"\n⚠️ {msg}", ConsoleColor.Yellow);
+		LogColor($"\n⚠️  {msg}", ConsoleColor.Yellow);
 	}
 
 	public static int GetValidInt(string? label = "Insert a number: ", string? errorMsg = "Wrong input, try again!", int? minValue = 0, int? maxValue = int.MaxValue)

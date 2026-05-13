@@ -8,6 +8,7 @@ namespace GarageAppV1;
 public class App
 {
 	public static bool AppRunning { get; private set; } = true;
+	public static bool CacheEnabled { get; private set; } = true;
 
 	private static GarageClass? _newGarage;
 
@@ -28,36 +29,33 @@ public class App
 	{
 		NewGarage = null;
 	}
-	private static void PopulateGarageWithDataFromFile()
-	{
-		(bool successfully, string? errorMsg, var garageFileData) = FileUtils.ReadFromGarageFile();
 
-		if (successfully && garageFileData is not null)
+	private static void InitAppWithCacheData()
+	{
+		// Try to populate the vehicles
+		(bool vehiclesCacheSyncSuccess, string? vehiclesCacheSyncErrorMsg) = VehiclesList.PopulateWithDataFromFile();
+
+		// Try to generate the garage
+		(bool garageCacheSyncSuccess, string? garageCacheSyncErrorMsg, var garageFileData) = FileUtils.ReadFromGarageFile();
+
+		if (garageCacheSyncSuccess && garageFileData is not null)
 		{
 			NewGarage = new GarageClass(garageFileData.Length, garageFileData);
-			ConsoleUtils.LogSuccess("Garage data populated successfully!");
+			// ConsoleUtils.LogSuccess("Garage data populated successfully!");
 		}
-		else if (!successfully)
-		{
-			ConsoleUtils.LogError("Could not create the garage with the data from local file!");
-			if (!string.IsNullOrEmpty(errorMsg))
-				ConsoleUtils.LogColor($"({errorMsg})", ConsoleColor.Red);
 
-			Console.ReadKey(true);
-			CloseApp();
+		if (!vehiclesCacheSyncSuccess || !garageCacheSyncSuccess)
+		{
+			CacheEnabled = false;
 		}
+
 	}
 
 	public void Run()
 	{
 		// populate with data from files
 		Console.Clear();
-		Console.WriteLine("Cache data loaded status:");
-		VehiclesList.PopulateWithDataFromFile();
-		PopulateGarageWithDataFromFile();
-
-		Console.WriteLine("\n\nPress anyhting to start!");
-		Console.ReadKey(true);
+		InitAppWithCacheData();
 
 		MainMenu mainMenu = new();
 		mainMenu.Run();

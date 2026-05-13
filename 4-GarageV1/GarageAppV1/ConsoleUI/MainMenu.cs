@@ -16,6 +16,10 @@ public class MainMenu : Menu
 	public override void MenuHandler()
 	{
 		Console.Clear();
+
+		if (!App.CacheEnabled)
+			ConsoleUtils.LogWarning("Cache disabled!");
+
 		ConsoleUtils.DisplayMenuHeader(["Main menu", "(navigate using tab/arrwos)"], '=');
 		Console.WriteLine("\nSelect one:");
 		// Here we display the menu and call the return value (the value from the _menuItems) which handles the user selection
