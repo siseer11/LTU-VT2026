@@ -1,0 +1,57 @@
+using GarageAppV2.Shared;
+
+namespace GarageAppV2.ConsoleUI;
+
+public abstract class Menu
+{
+	public bool Opened { get; set; } = true;
+
+	public void GoBack()
+	{
+		Opened = false;
+	}
+
+	public static void CloseApp()
+	{
+		AppStore.CloseApp();
+	}
+
+	public void NavigateToNewMenu(Menu NewMenu)
+	{
+		Opened = false; // close this menu
+		NewMenu.Run();
+	}
+
+	public void NavigateToMainMenu()
+	{
+		MainMenu mainMenu = new();
+		NavigateToNewMenu(mainMenu);
+	}
+
+	public void NavigateToGarageMenu()
+	{
+		GarageMenu garageMenu = new();
+		NavigateToNewMenu(garageMenu);
+	}
+
+	public void NavigateToVehiclesMenu()
+	{
+		VehiclesMenu vehiclesMenu = new();
+		NavigateToNewMenu(vehiclesMenu);
+	}
+
+	/*
+	* This will be called while the menu is opened
+	* is the function that calls the UI + handlers for each option
+	*/
+	public abstract void MenuHandler();
+
+	public void Run()
+	{
+		while (Opened && AppStore.AppRunning)
+		{
+			MenuHandler();
+		}
+	}
+
+}

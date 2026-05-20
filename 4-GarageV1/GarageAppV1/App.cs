@@ -1,5 +1,4 @@
 using GarageAppV1.ConsoleUI;
-using GarageAppV1.FileData;
 using GarageAppV1.Garage;
 using GarageAppV1.Vehicles;
 
@@ -35,14 +34,11 @@ public class App
 		// Try to populate the vehicles
 		(bool vehiclesCacheSyncSuccess, string? vehiclesCacheSyncErrorMsg) = VehiclesList.PopulateWithDataFromFile();
 
-		// Try to generate the garage
-		(bool garageCacheSyncSuccess, string? garageCacheSyncErrorMsg, var garageFileData) = FileUtils.ReadFromGarageFile();
+		// Try to generate the garage, with cache data
+		(bool garageCacheSyncSuccess, GarageClass? GarageObject) = GarageClass.GenerateGarageFromCache();
 
-		if (garageCacheSyncSuccess && garageFileData is not null)
-		{
-			NewGarage = new GarageClass(garageFileData.Length, garageFileData);
-			// ConsoleUtils.LogSuccess("Garage data populated successfully!");
-		}
+		if (garageCacheSyncSuccess && GarageObject is not null)
+			NewGarage = GarageObject;
 
 		if (!vehiclesCacheSyncSuccess || !garageCacheSyncSuccess)
 		{

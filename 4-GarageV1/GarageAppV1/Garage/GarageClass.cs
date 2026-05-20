@@ -114,6 +114,25 @@ public class GarageClass
 
 	}
 
+	public static (bool garageCacheSyncSuccess, GarageClass? GarageObject) GenerateGarageFromCache()
+	{
+		(bool garageCacheDataReadSuccess, string? garageCacheDataReadErrorMsg, var garageFileData) = FileUtils.ReadFromGarageFile();
+
+		if (garageCacheDataReadSuccess)
+		{
+			if (garageFileData is not null)
+				return (garageCacheSyncSuccess: true, new GarageClass(garageFileData.Length, garageFileData));
+			else
+				return (garageCacheSyncSuccess: true, null);
+
+		}
+		else
+		{
+			return (garageCacheSyncSuccess: false, null);
+		}
+
+	}
+
 	public GarageClass(int garageCapacity, string[]? vehiclesInitialyParked)
 	{
 		if (garageCapacity < 1 || garageCapacity > MaxCapacity)
