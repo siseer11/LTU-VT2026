@@ -1,10 +1,11 @@
 using System.Collections;
+using GarageAppV2.Contracts;
 namespace GarageAppV2.Vehicles;
 
-public class VehiclesDb : IEnumerable<Vehicle>
+public class VehiclesDb : IEnumerable<Vehicle>, IVehiclesDb
 {
 	private Dictionary<string, Vehicle> _vehicles = [];
-	public int NumberOfVehicles { get; private set; } = 0;
+	public int NumberOfVehicles => _vehicles.Count;
 
 	public bool AddVehicle(Vehicle vehicle)
 	{
@@ -14,7 +15,6 @@ public class VehiclesDb : IEnumerable<Vehicle>
 		}
 
 		_vehicles.Add(vehicle.RegistrationNr, vehicle);
-		NumberOfVehicles++;
 
 		return true;
 	}

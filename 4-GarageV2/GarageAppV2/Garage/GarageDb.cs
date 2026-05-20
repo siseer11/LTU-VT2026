@@ -1,19 +1,19 @@
 using System.Collections;
+using GarageAppV2.Contracts;
 using GarageAppV2.Vehicles;
 
 namespace GarageAppV2.Garage;
 
-public class GarageDb<T> : IEnumerable<T> where T : Vehicle
+public class GarageDb<T> : IEnumerable<T>, IGarageDb<T> where T : Vehicle
 {
 	private T?[] _parkedVehicles;
 	public int Capacity { get; private set; }
-	public int NumberOfParkedVehicles { get; private set; }
+	public int NumberOfParkedVehicles => _parkedVehicles.Count(v => v is not null);
 
 	public GarageDb(int capacity)
 	{
 		Capacity = capacity;
 		_parkedVehicles = new T[capacity];
-		NumberOfParkedVehicles = 0;
 	}
 
 	public bool Add(T vehicle)
@@ -25,7 +25,6 @@ public class GarageDb<T> : IEnumerable<T> where T : Vehicle
 			if (_parkedVehicles[i] == null)
 			{
 				_parkedVehicles[i] = vehicle;
-				NumberOfParkedVehicles++;
 				return true;
 			}
 		}
@@ -40,7 +39,6 @@ public class GarageDb<T> : IEnumerable<T> where T : Vehicle
 			if (_parkedVehicles[i]?.RegistrationNr == registrationNumber)
 			{
 				_parkedVehicles[i] = null;
-				NumberOfParkedVehicles--;
 				return true;
 			}
 		}
