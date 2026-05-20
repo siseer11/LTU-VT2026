@@ -2,7 +2,7 @@ using System;
 
 namespace GarageAppV2.Contracts;
 
-public interface IGarageDb<T>
+public interface IGarageDb<T> : IEnumerable<T>
 {
 	int Capacity { get; }
 	int NumberOfParkedVehicles { get; }

@@ -9,7 +9,7 @@ namespace GarageAppV2.Garage;
 public class GarageHandler : IGarageHandler
 {
 	private readonly int MaxCapacity = 200;
-	private GarageDb<Vehicle>? _vehiclesGarage;
+	private IGarageDb<Vehicle>? _vehiclesGarage;
 
 	public bool IsGarageBuilt => _vehiclesGarage is not null;
 

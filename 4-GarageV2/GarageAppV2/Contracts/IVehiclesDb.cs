@@ -3,7 +3,7 @@ using GarageAppV2.Vehicles;
 
 namespace GarageAppV2.Contracts;
 
-public interface IVehiclesDb
+public interface IVehiclesDb : IEnumerable<Vehicle>
 {
 	int NumberOfVehicles { get; }
 	bool AddVehicle(Vehicle vehicle);

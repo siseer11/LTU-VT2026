@@ -4,7 +4,7 @@ using GarageAppV2.Vehicles;
 
 namespace GarageAppV2.Garage;
 
-public class GarageDb<T> : IEnumerable<T>, IGarageDb<T> where T : Vehicle
+public class GarageDb<T> : IGarageDb<T> where T : Vehicle
 {
 	private T?[] _parkedVehicles;
 	public int Capacity { get; private set; }

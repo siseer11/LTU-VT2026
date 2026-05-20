@@ -2,7 +2,7 @@ using System.Collections;
 using GarageAppV2.Contracts;
 namespace GarageAppV2.Vehicles;
 
-public class VehiclesDb : IEnumerable<Vehicle>, IVehiclesDb
+public class VehiclesDb : IVehiclesDb
 {
 	private Dictionary<string, Vehicle> _vehicles = [];
 	public int NumberOfVehicles => _vehicles.Count;

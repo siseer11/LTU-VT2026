@@ -20,7 +20,7 @@ enum VehicleListTableColumns
 
 public class VehiclesHandler : IVehiclesHandler
 {
-	private readonly VehiclesDb _vehiclesDb = new();
+	private readonly IVehiclesDb _vehiclesDb = new VehiclesDb();
 
 	public bool PopulateFromCache()
 	{
