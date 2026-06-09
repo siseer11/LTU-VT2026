@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarageAppV2", "GarageAppV2\GarageAppV2.csproj", "{B12A5407-4092-4920-8FF3-38901B37B582}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarageAppV2.Tests", "GarageAppV2.Tests\GarageAppV2.Tests.csproj", "{485C5271-1892-48BC-818E-5802B11092FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,18 @@ Global
 		{B12A5407-4092-4920-8FF3-38901B37B582}.Release|x64.Build.0 = Release|Any CPU
 		{B12A5407-4092-4920-8FF3-38901B37B582}.Release|x86.ActiveCfg = Release|Any CPU
 		{B12A5407-4092-4920-8FF3-38901B37B582}.Release|x86.Build.0 = Release|Any CPU
+		{485C5271-1892-48BC-818E-5802B11092FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{485C5271-1892-48BC-818E-5802B11092FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{485C5271-1892-48BC-818E-5802B11092FB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{485C5271-1892-48BC-818E-5802B11092FB}.Debug|x64.Build.0 = Debug|Any CPU
+		{485C5271-1892-48BC-818E-5802B11092FB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{485C5271-1892-48BC-818E-5802B11092FB}.Debug|x86.Build.0 = Debug|Any CPU
+		{485C5271-1892-48BC-818E-5802B11092FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{485C5271-1892-48BC-818E-5802B11092FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{485C5271-1892-48BC-818E-5802B11092FB}.Release|x64.ActiveCfg = Release|Any CPU
+		{485C5271-1892-48BC-818E-5802B11092FB}.Release|x64.Build.0 = Release|Any CPU
+		{485C5271-1892-48BC-818E-5802B11092FB}.Release|x86.ActiveCfg = Release|Any CPU
+		{485C5271-1892-48BC-818E-5802B11092FB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

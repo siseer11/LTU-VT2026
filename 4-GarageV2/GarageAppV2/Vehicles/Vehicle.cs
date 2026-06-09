@@ -100,7 +100,7 @@ public abstract class Vehicle
 
 	public string GetVehicleDetailsString()
 	{
-		return $"Year: {ManufacturingYear?.ToString() ?? "-"} | Color: {Color ?? "-"} | NumberOfEngines: {NumberOfEngines?.ToString() ?? "-"} | FuelType: {FuelType.ToString() ?? "-"} | NumberOfSeats: {NumberOfSeats?.ToString() ?? "-"} | Length: {Length?.ToString() ?? "-"}";
+		return $"Year: {ManufacturingYear?.ToString() ?? "-"} | Color: {Color ?? "-"} | NumberOfEngines: {NumberOfEngines?.ToString() ?? "-"} | FuelType: {FuelType?.ToString() ?? "-"} | NumberOfSeats: {NumberOfSeats?.ToString() ?? "-"} | Length: {Length?.ToString() ?? "-"}";
 	}
 	public Vehicle(string brand, string model, string registrationNr)
 	{

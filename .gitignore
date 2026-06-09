@@ -4,3 +4,7 @@ obj/
 
 # VS Code
 .vscode/
+
+*.user
+*.suo
+*.sln.docstates

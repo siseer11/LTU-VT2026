@@ -18,7 +18,7 @@ public class GarageDb<T> : IGarageDb<T> where T : Vehicle
 
 	public bool Add(T vehicle)
 	{
-		if (NumberOfParkedVehicles >= Capacity) return false;
+		if (NumberOfParkedVehicles >= Capacity || GetVehicle(vehicle.RegistrationNr) is Vehicle) return false;
 
 		for (int i = 0; i < Capacity; i++)
 		{
