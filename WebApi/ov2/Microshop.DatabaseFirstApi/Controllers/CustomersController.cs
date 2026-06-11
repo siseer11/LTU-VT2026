@@ -39,7 +39,7 @@ public class CustomersController : ControllerBase
 					c.LastName,
 					c.Email,
 					c.Phone,
-					c.Orders.Select(o => new OrderDto(o.OrderDate, o.TotalAmount, o.Status)).ToList()
+					c.Orders.Select(o => new OrderDto(o.OrderId, o.OrderDate, o.TotalAmount, o.Status, c.CustomerId)).ToList()
 				)
 			)
 			.FirstOrDefaultAsync();
