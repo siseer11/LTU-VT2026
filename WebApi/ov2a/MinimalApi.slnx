@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="ControllerApi/ControllerApi.csproj" />
+  <Project Path="GrpcApi/GrpcApi.csproj" />
+  <Project Path="GrpcClient/GrpcClient.csproj" />
+  <Project Path="MinimalApi/MinimalApi.csproj" />
+  <Project Path="MixedApi/MixedApi.csproj" />
+  <Project Path="SignalRApi/SignalRApi.csproj" />
+</Solution>

@@ -1,0 +1,6 @@
+@MixedApi_HostAddress = http://localhost:5008
+
+GET {{MixedApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

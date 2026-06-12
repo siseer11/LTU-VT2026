@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <body>
+    <input id="message" />
+    <button onclick="send()">Send</button>
+
+    <ul id="messages"></ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+
+    <script>
+      const connection = new signalR.HubConnectionBuilder()
+        .withUrl("https://localhost:7220/chat")
+        .build();
+
+      connection.on("ReceiveMessage", (message) => {
+        const li = document.createElement("li");
+        li.textContent = message;
+        document.getElementById("messages").appendChild(li);
+      });
+
+      connection.start();
+
+      async function send() {
+        const msg = document.getElementById("message").value;
+        await connection.invoke("SendMessage", msg);
+      }
+    </script>
+  </body>
+</html>
