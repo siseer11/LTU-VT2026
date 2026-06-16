@@ -1,4 +1,5 @@
-namespace MovieApp.Dtos;
+using MovieApp.Dtos.Actors;
+namespace MovieApp.Dtos.Movies;
 
 public record MovieFullInfoDto(
 	int Id,

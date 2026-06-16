@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MovieApp.Dtos;
+namespace MovieApp.Dtos.Movies;
 
-public partial class MovieUpdateDto()
+public partial class MovieCreationDto()
 {
 	[Required]
 	[StringLength(100, MinimumLength = 2)]

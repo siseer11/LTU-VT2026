@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using MovieApp.Data;
 using MovieApp.Dtos;
 using MovieApp.Models;
+using MovieApp.Dtos.Movies;
+using MovieApp.Dtos.Actors;
 
 namespace MovieApp.Controllers;
 
@@ -187,6 +189,30 @@ public class MoviesController(AppDbContext context) : ControllerBase
 		await _context.Movies
 			.Where(m => m.Id == id)
 			.ExecuteDeleteAsync();
+
+		return NoContent();
+	}
+
+	[HttpPost("{movieId:int}/actors/{actorId:int}")]
+	public async Task<ActionResult> AddActorToMovieCast(int movieId, int actorId)
+	{
+		//checks
+		var movie = await _context.Movies
+			.Include(m => m.Actors)
+			.FirstOrDefaultAsync(m => m.Id == movieId);
+		if (movie is null)
+			return NotFound(new { error = "Movie not found!" });
+
+		var actor = await _context.Actors.FindAsync(actorId);
+		if (actor is null)
+			return NotFound(new { error = "Actor not found!" });
+
+		if (movie.Actors.Any(a => a.Id == actorId))
+			return BadRequest(new { error = "Actor already in the movie!" });
+
+		//add
+		movie.Actors.Add(actor);
+		await _context.SaveChangesAsync();
 
 		return NoContent();
 	}

@@ -1,4 +1,4 @@
-namespace MovieApp.Dtos;
+namespace MovieApp.Dtos.Movies;
 
 public record MovieDto(
 	int Id,
