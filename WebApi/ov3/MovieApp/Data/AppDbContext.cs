@@ -36,6 +36,7 @@ public class AppDbContext : DbContext
 		var review = modelBuilder.Entity<Review>();
 		review.Property(r => r.Comment).HasMaxLength(250);
 		review.Property(r => r.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+		review.Property(r => r.Edited).HasDefaultValue(false);
 		review.ToTable(t =>
 		{
 			t.HasCheckConstraint(

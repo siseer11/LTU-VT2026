@@ -1,4 +1,5 @@
 using MovieApp.Dtos.Actors;
+using MovieApp.Dtos.Reviews;
 namespace MovieApp.Dtos.Movies;
 
 public record MovieFullInfoDto(

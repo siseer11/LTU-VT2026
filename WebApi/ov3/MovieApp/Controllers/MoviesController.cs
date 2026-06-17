@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieApp.Data;
-using MovieApp.Dtos;
 using MovieApp.Models;
 using MovieApp.Dtos.Movies;
 using MovieApp.Dtos.Actors;
+using MovieApp.Dtos.Reviews;
+using MovieApp.Dtos.Users;
 
 namespace MovieApp.Controllers;
 
@@ -53,6 +54,8 @@ public class MoviesController(AppDbContext context) : ControllerBase
 						r.Id,
 						r.Rating,
 						r.Comment,
+						r.Edited,
+						r.EditedAt,
 						r.CreatedAt,
 						new UserDto(
 							r.Reviewer.Id,

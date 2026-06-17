@@ -6,6 +6,8 @@ public class Review
 	public int Rating { get; set; }
 	public string? Comment { get; set; }
 	public DateTime CreatedAt { get; set; }
+	public bool? Edited { get; set; } = false;
+	public DateTime? EditedAt { get; set; }
 	public int MovieId { get; set; }
 	public Movie Movie { get; set; } = null!;
 	public int ReviewerId { get; set; }
