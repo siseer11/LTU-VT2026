@@ -6,6 +6,7 @@ using MovieApp.Dtos.Movies;
 using MovieApp.Dtos.Actors;
 using MovieApp.Dtos.Reviews;
 using MovieApp.Dtos.Users;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MovieApp.Controllers;
 
@@ -16,9 +17,31 @@ public class MoviesController(AppDbContext context) : ControllerBase
 	private readonly AppDbContext _context = context;
 
 	[HttpGet]
-	public async Task<ActionResult<MovieDto>> GetMovies()
+	public async Task<ActionResult<IEnumerable<MovieDto>>> GetMovies(
+		[FromQuery] string? genre,
+		[FromQuery] string? title,
+		[FromQuery] string? actor
+	)
 	{
-		var movies = await _context.Movies
+		var query = _context.Movies.AsQueryable();
+
+		if (!string.IsNullOrWhiteSpace(genre))
+		{
+			// movies = movies.Where(m => m.Genre.Name.ToLower().Contains(genre.ToLower()));
+			query = query.Where(m => EF.Functions.Like(m.Genre.Name, $"%{genre}%"));
+		}
+
+		if (!string.IsNullOrWhiteSpace(title))
+		{
+			query = query.Where(m => EF.Functions.Like(m.Title, $"%{title}%"));
+		}
+
+		if (!string.IsNullOrWhiteSpace(actor))
+		{
+			query = query.Where(m => m.Actors.Any(a => EF.Functions.Like(a.Name, $"%{actor}%")));
+		}
+
+		var movies = await query
 			.Select(m => new MovieDto(
 				m.Id,
 				m.Title,

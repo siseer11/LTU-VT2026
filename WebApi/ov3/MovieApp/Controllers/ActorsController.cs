@@ -14,9 +14,16 @@ public class ActorsController(AppDbContext context) : ControllerBase
 	private readonly AppDbContext _context = context;
 
 	[HttpGet]
-	public async Task<ActionResult<ActorDto>> GetActors()
+	public async Task<ActionResult<ActorDto>> GetActors([FromQuery] string? name)
 	{
-		var actors = await _context.Actors
+		var query = _context.Actors.AsQueryable();
+
+		if (!string.IsNullOrWhiteSpace(name))
+		{
+			query = query.Where(a => EF.Functions.Like(a.Name, $"%{name}%"));
+		}
+
+		var actors = await query
 			.Select(a => new ActorDto(a.Id, a.Name, a.ImageURL, a.BirthDate))
 			.ToListAsync();
 
