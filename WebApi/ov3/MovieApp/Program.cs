@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using MovieApp.Data;
+using MovieApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,10 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(
 	dbContextOptions => dbContextOptions.UseSqlServer(builder.Configuration.GetConnectionString("db"))
 );
+
+builder.Services.AddScoped<IActorService, ActorService>();
+builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IReviewsService, ReviewsService>();
 
 var app = builder.Build();
 
