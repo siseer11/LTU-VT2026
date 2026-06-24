@@ -82,7 +82,6 @@ public class MovieService(AppDbContext context) : IMovieService
 				ErrorCode = AddMovieErrors.GenreNotFound
 			};
 
-
 		var uniqueIncomingActorIds = newMovieData.Actors.Distinct().ToList();
 
 		var actorsDbData = await _context.Actors
