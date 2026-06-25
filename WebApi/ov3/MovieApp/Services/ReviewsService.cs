@@ -84,6 +84,7 @@ public class ReviewsService(AppDbContext context) : IReviewsService
 			Comment = reviewData.Comment,
 			Rating = reviewData.Rating,
 			ReviewerId = reviewData.ReviewerId,
+			CreatedAt = DateTime.UtcNow
 		};
 
 		var res = await _context.Reviews.AddAsync(reviewToAdd);

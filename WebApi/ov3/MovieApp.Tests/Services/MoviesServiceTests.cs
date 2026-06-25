@@ -344,7 +344,13 @@ public class MovieServicesTests
 		// Arrange
 		var actor = await CreateActor();
 		var genre = await CreateGenre();
-		var movieToBeAdded = await CreateMovie(genre, [actor]);
+		var movieToBeAdded = await CreateMovie(genre, [actor], true);
+
+		MovieDetails movieDetails = new() { Budget = 999, Language = "En", Synopsis = "Worst", Movie = movieToBeAdded };
+		await _context.MovieDetails.AddAsync(movieDetails);
+
+		movieToBeAdded.MovieDetails = movieDetails;
+		await _context.SaveChangesAsync();
 
 		// Act
 		var response = await _service.FullyUpdateMovie(movieToBeAdded.Id, GenerateMovieUpdateDto(genre.Id, [actor.Id]));
