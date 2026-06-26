@@ -9,6 +9,7 @@ namespace MovieApp.Controllers;
 public class ReviewsController(IReviewsService service) : ControllerBase
 {
 	private readonly IReviewsService _service = service;
+	private const int maxNumberOfReviewsPerPage = 20;
 
 	[HttpGet("reviews/{id:int}", Name = "ReviewById")]
 	public async Task<ActionResult<ReviewDetailedDto>> GetReviewById(int id)
@@ -49,9 +50,12 @@ public class ReviewsController(IReviewsService service) : ControllerBase
 	}
 
 	[HttpGet("movies/{movieId:int}/reviews")]
-	public async Task<ActionResult<IEnumerable<ReviewDto>>> GetReviewsForMovieById(int movieId)
+	public async Task<ActionResult<IEnumerable<ReviewDto>>> GetReviewsForMovieById(int movieId, int page = 1, int perPage = 10)
 	{
-		var result = await _service.GetReviewsForMovieById(movieId);
+		if (perPage > maxNumberOfReviewsPerPage)
+			perPage = maxNumberOfReviewsPerPage;
+
+		var result = await _service.GetReviewsForMovieById(movieId, page, perPage);
 
 		if (result.Success == false)
 		{

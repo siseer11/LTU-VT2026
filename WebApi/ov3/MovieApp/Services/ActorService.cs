@@ -4,6 +4,7 @@ using MovieApp.Dtos.Actors;
 using MovieApp.Dtos.Movies;
 using MovieApp.Enums;
 using MovieApp.Models;
+using MovieApp.Results;
 
 namespace MovieApp.Services;
 
@@ -56,7 +57,7 @@ public class ActorService(AppDbContext context) : IActorService
 		return actor;
 	}
 
-	public async Task<IEnumerable<ActorDto>> GetActors(string? name)
+	public async Task<PaginatedResult<ActorDto>> GetActors(string? name, int page, int itemsPerPage)
 	{
 		var query = _context.Actors.AsQueryable();
 
@@ -65,11 +66,18 @@ public class ActorService(AppDbContext context) : IActorService
 			query = query.Where(a => EF.Functions.Like(a.Name, $"%{name}%"));
 		}
 
+		var numberOfActors = await query.CountAsync();
 		var actors = await query
+			.Skip(itemsPerPage * (page - 1))
+			.Take(itemsPerPage)
 			.Select(a => new ActorDto(a.Id, a.Name, a.ImageURL, a.BirthDate))
 			.ToListAsync();
 
-		return actors;
+		return new PaginatedResult<ActorDto>()
+		{
+			Data = actors,
+			Pagination = new(page, itemsPerPage, numberOfActors)
+		};
 	}
 
 	public async Task<UpdateActorResult> UpdateActor(int id, ActorUpdateDto updateData)

@@ -10,15 +10,21 @@ namespace MovieApp.Controllers;
 public class MoviesController(IMovieService service) : ControllerBase
 {
 	private readonly IMovieService _service = service;
+	private const int maxMoviesPerPage = 20;
 
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<MovieDto>>> GetMovies(
 		[FromQuery] string? genre,
 		[FromQuery] string? title,
-		[FromQuery] string? actor
+		[FromQuery] string? actor,
+		[FromQuery] int page = 1,
+		[FromQuery] int perPage = 10
 	)
 	{
-		var movies = await _service.GetMovies(genre, title, actor);
+		if (perPage > maxMoviesPerPage)
+			perPage = maxMoviesPerPage;
+
+		var movies = await _service.GetMovies(genre, title, actor, page, perPage);
 
 		return Ok(movies);
 	}

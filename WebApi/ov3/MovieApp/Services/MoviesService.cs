@@ -14,7 +14,7 @@ public class MovieService(AppDbContext context) : IMovieService
 {
 	private AppDbContext _context = context;
 
-	public async Task<IEnumerable<MovieDto>> GetMovies(string? genre, string? title, string? actor)
+	public async Task<PaginatedResult<MovieDto>> GetMovies(string? genre, string? title, string? actor, int page, int itemsPerPage)
 	{
 		var query = _context.Movies.AsQueryable();
 
@@ -34,7 +34,10 @@ public class MovieService(AppDbContext context) : IMovieService
 			query = query.Where(m => m.Actors.Any(a => EF.Functions.Like(a.Name, $"%{actor}%")));
 		}
 
+		var totalMoviesInDb = await query.CountAsync();
 		var movies = await query
+			.Skip((page - 1) * itemsPerPage)
+			.Take(itemsPerPage)
 			.Select(m => new MovieDto(
 				m.Id,
 				m.Title,
@@ -44,7 +47,13 @@ public class MovieService(AppDbContext context) : IMovieService
 				m.Genre.ChildrenSafe
 			)).ToListAsync();
 
-		return movies;
+		var paginationMetadata = new PaginationMetadata(page, itemsPerPage, totalMoviesInDb);
+
+		return new PaginatedResult<MovieDto>()
+		{
+			Pagination = paginationMetadata,
+			Data = movies
+		};
 	}
 
 	public async Task<GenericResult<bool, AddActorToMovieCastErrors>> AddActorToMovieCast(int movieId, int actorId)

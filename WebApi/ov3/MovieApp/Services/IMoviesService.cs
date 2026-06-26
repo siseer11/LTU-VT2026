@@ -6,7 +6,7 @@ namespace MovieApp.Services;
 
 public interface IMovieService
 {
-	Task<IEnumerable<MovieDto>> GetMovies(string? genre, string? title, string? actor);
+	Task<PaginatedResult<MovieDto>> GetMovies(string? genre, string? title, string? actor, int page, int itemsPerPage);
 	Task<MovieFullInfoDto?> GetMovieById(int id);
 	Task<GenericResult<MovieFullInfoDto, AddMovieErrors>> AddMovie(MovieCreationDto newMovieData);
 	Task<GenericResult<bool, FullyUpdateMovieErrors>> FullyUpdateMovie(int id, MovieUpdateDto updateData);

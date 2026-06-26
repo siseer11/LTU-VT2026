@@ -18,7 +18,14 @@ builder.Services.AddScoped<IActorService, ActorService>();
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IReviewsService, ReviewsService>();
 
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
+
+if (!app.Environment.IsDevelopment())
+{
+	app.UseExceptionHandler();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

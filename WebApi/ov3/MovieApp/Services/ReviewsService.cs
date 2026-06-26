@@ -19,14 +19,14 @@ public class ReviewsService(AppDbContext context) : IReviewsService
 		return movie is null;
 	}
 
-	public async Task<GenericResult<IEnumerable<ReviewDto>, ReviewsForMovieByIdErrors>> GetReviewsForMovieById(int movieId)
+	public async Task<GenericResult<PaginatedResult<ReviewDto>, ReviewsForMovieByIdErrors>> GetReviewsForMovieById(int movieId, int page, int itemsPerPage)
 	{
 		//checks
 		if (await MovieDoesNotExists(movieId))
 			return new() { Success = false, ErrorCode = ReviewsForMovieByIdErrors.MovieNotFound };
 
 
-		var reviews = await _context.Reviews
+		var query = _context.Reviews
 			.Where(r => r.MovieId == movieId)
 			.Select(r => new ReviewDto(
 					r.Id,
@@ -42,9 +42,20 @@ public class ReviewsService(AppDbContext context) : IReviewsService
 						r.Reviewer.IsAHater
 					)
 				)
-			).ToListAsync();
+			);
 
-		return new() { Success = true, Data = reviews };
+		var numberOfReviews = await query.CountAsync();
+		var reviews = await query.Skip(itemsPerPage * (page - 1)).Take(itemsPerPage).ToListAsync();
+
+		return new()
+		{
+			Success = true,
+			Data = new()
+			{
+				Data = reviews,
+				Pagination = new(page, itemsPerPage, numberOfReviews)
+			}
+		};
 	}
 
 	public async Task<ReviewDetailedDto?> GetReviewById(int id)

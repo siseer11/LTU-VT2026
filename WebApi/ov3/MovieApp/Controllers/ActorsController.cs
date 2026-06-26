@@ -10,11 +10,19 @@ namespace MovieApp.Controllers;
 public class ActorsController(IActorService service) : ControllerBase
 {
 	private readonly IActorService _service = service;
+	private const int maxNumberOfActorsPerPage = 20;
 
 	[HttpGet]
-	public async Task<ActionResult<IEnumerable<ActorDto>>> GetActors([FromQuery] string? name)
+	public async Task<ActionResult<IEnumerable<ActorDto>>> GetActors(
+		[FromQuery] string? name,
+		[FromQuery] int page = 1,
+		[FromQuery] int perPage = 10
+	)
 	{
-		var actors = await _service.GetActors(name);
+		if (perPage > maxNumberOfActorsPerPage)
+			perPage = maxNumberOfActorsPerPage;
+
+		var actors = await _service.GetActors(name, page, perPage);
 
 		return Ok(actors);
 	}
