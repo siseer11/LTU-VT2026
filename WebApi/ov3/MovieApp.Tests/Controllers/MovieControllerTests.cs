@@ -20,6 +20,15 @@ public class MovieControllersTests
 		_controller = new MoviesController(_serviceMock.Object);
 	}
 
+	private static PaginatedResult<MovieDto> PaginatedResponse(List<MovieDto>? actorsList, int currentPage = 1, int itemsPerPage = 10, int totalItemsCount = 50)
+	{
+		return new PaginatedResult<MovieDto>()
+		{
+			Data = actorsList ?? [],
+			Pagination = new(currentPage, itemsPerPage, totalItemsCount)
+		};
+	}
+
 	private static MovieFullInfoDto CreateMovieDto(
 		int id = 1,
 		string title = "Test")
@@ -113,23 +122,24 @@ public class MovieControllersTests
 		);
 	}
 
+
 	[Fact]
 	public async Task GetMovies_ReturnsOk()
 	{
 		// Arrange
 		_serviceMock
-			.Setup(x => x.GetMovies(null, null, null))
-			.ReturnsAsync(new List<MovieDto>());
+			.Setup(x => x.GetMovies(null, null, null, 1, 10))
+			.ReturnsAsync(PaginatedResponse(null));
 
 		// Act
 		var response = await _controller.GetMovies(null, null, null);
 
 		// Assert
 		var okReponse = Assert.IsType<OkObjectResult>(response.Result);
-		Assert.IsType<List<MovieDto>>(okReponse.Value);
+		Assert.IsType<PaginatedResult<MovieDto>>(okReponse.Value);
 
 		_serviceMock.Verify(
-			x => x.GetMovies(null, null, null),
+			x => x.GetMovies(null, null, null, 1, 10),
 			Times.Once
 		);
 	}
@@ -139,8 +149,8 @@ public class MovieControllersTests
 	{
 		// Arrange
 		_serviceMock
-			.Setup(x => x.GetMovies("Action", "Test Movie", "Leo"))
-			.ReturnsAsync(new List<MovieDto>());
+			.Setup(x => x.GetMovies("Action", "Test Movie", "Leo", 1, 10))
+			.ReturnsAsync(PaginatedResponse(null));
 
 
 		// Act
@@ -148,7 +158,7 @@ public class MovieControllersTests
 
 		// Assert
 		_serviceMock.Verify(
-			x => x.GetMovies("Action", "Test Movie", "Leo"),
+			x => x.GetMovies("Action", "Test Movie", "Leo", 1, 10),
 			Times.Once
 		);
 	}

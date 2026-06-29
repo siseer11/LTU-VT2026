@@ -4,12 +4,23 @@ using MovieApp.Controllers;
 using MovieApp.Dtos.Actors;
 using MovieApp.Enums;
 using MovieApp.Models;
+using MovieApp.Results;
 using MovieApp.Services;
 
 namespace MovieApp.Tests.Controllers;
 
 public class ActorsControllerTests
 {
+
+	private static PaginatedResult<ActorDto> PaginatedResponse(List<ActorDto>? actorsList, int currentPage = 1, int itemsPerPage = 10, int totalItemsCount = 50)
+	{
+		return new PaginatedResult<ActorDto>()
+		{
+			Data = actorsList ?? [],
+			Pagination = new(currentPage, itemsPerPage, totalItemsCount)
+		};
+	}
+
 	[Fact]
 	public async Task GetActorById_ReturnsOk_WhenActorExists()
 	{
@@ -70,9 +81,11 @@ public class ActorsControllerTests
 			new ActorDto(2, "Test 2", "test2.jpg", new DateOnly())
 		];
 
+		var toReturn = PaginatedResponse(mockActorList);
+
 		mockService
-			.Setup(x => x.GetActors(null))
-			.ReturnsAsync(mockActorList);
+			.Setup(x => x.GetActors(null, 1, 10))
+			.ReturnsAsync(toReturn);
 
 		var controller = new ActorsController(mockService.Object);
 
@@ -82,9 +95,9 @@ public class ActorsControllerTests
 		// Assert
 		var okResult = Assert.IsType<OkObjectResult>(result.Result);
 
-		var returnedActors = Assert.IsType<IEnumerable<ActorDto>>(okResult.Value, exactMatch: false);
+		var returnedActors = Assert.IsType<PaginatedResult<ActorDto>>(okResult.Value, exactMatch: false);
 
-		Assert.Equal(2, returnedActors.Count());
+		Assert.Equal(2, returnedActors.Data.Count());
 	}
 
 	[Fact]
@@ -94,8 +107,8 @@ public class ActorsControllerTests
 		var mockService = new Mock<IActorService>();
 
 		mockService
-			.Setup(x => x.GetActors("Nick"))
-			.ReturnsAsync(new List<ActorDto>());
+			.Setup(x => x.GetActors("Nick", 1, 10))
+			.ReturnsAsync(PaginatedResponse(null));
 
 		var controller = new ActorsController(mockService.Object);
 
@@ -104,7 +117,7 @@ public class ActorsControllerTests
 
 		// Assert
 		mockService.Verify(
-			x => x.GetActors("Nick"),
+			x => x.GetActors("Nick", 1, 10),
 			Times.Once
 		);
 	}

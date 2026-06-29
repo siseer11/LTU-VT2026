@@ -30,6 +30,15 @@ public class ReviewsControllerTests
 		return new(1, "T", 2022, "M.jpg", "Some", true);
 	}
 
+	private static PaginatedResult<ReviewDto> PaginatedResponse(List<ReviewDto>? actorsList, int currentPage = 1, int itemsPerPage = 10, int totalItemsCount = 50)
+	{
+		return new PaginatedResult<ReviewDto>()
+		{
+			Data = actorsList ?? [],
+			Pagination = new(currentPage, itemsPerPage, totalItemsCount)
+		};
+	}
+
 	[Fact]
 	public async Task GetReviewById_ReturnsNotFound_IfNoReviewFound()
 	{
@@ -125,8 +134,16 @@ public class ReviewsControllerTests
 	{
 		// Arrange
 		_serviceMock
-			.Setup(x => x.GetReviewsForMovieById(1))
-			.ReturnsAsync(new GenericResult<IEnumerable<ReviewDto>, Enums.ReviewsForMovieByIdErrors>() { Success = false, ErrorCode = Enums.ReviewsForMovieByIdErrors.MovieNotFound });
+			.Setup(x => x.GetReviewsForMovieById(1, 1, 10))
+			.ReturnsAsync(
+				new GenericResult<
+					PaginatedResult<ReviewDto>,
+					Enums.ReviewsForMovieByIdErrors
+				>()
+				{
+					Success = false,
+					ErrorCode = Enums.ReviewsForMovieByIdErrors.MovieNotFound
+				});
 
 		// Act
 		var response = await _controller.GetReviewsForMovieById(1);
@@ -134,19 +151,21 @@ public class ReviewsControllerTests
 		// Assert
 		Assert.IsType<NotFoundResult>(response.Result);
 
-		_serviceMock.Verify(x => x.GetReviewsForMovieById(1), Times.Once);
+		_serviceMock.Verify(x => x.GetReviewsForMovieById(1, 1, 10), Times.Once);
 	}
+
 
 	[Fact]
 	public async Task GetReviewsForMovieById_ReturnsOk_WhenMovieFound()
 	{
 		// Arrange
+		var toReturn = PaginatedResponse([new ReviewDto(1, 1, "no good!", false, new DateTime(), new DateTime(), CreateReviewerDto())]);
 		_serviceMock
-			.Setup(x => x.GetReviewsForMovieById(1))
-			.ReturnsAsync(new GenericResult<IEnumerable<ReviewDto>, Enums.ReviewsForMovieByIdErrors>()
+			.Setup(x => x.GetReviewsForMovieById(1, 1, 10))
+			.ReturnsAsync(new GenericResult<PaginatedResult<ReviewDto>, Enums.ReviewsForMovieByIdErrors>()
 			{
 				Success = true,
-				Data = [new ReviewDto(1, 1, "no good!", false, new DateTime(), new DateTime(), CreateReviewerDto())]
+				Data = toReturn
 			});
 
 		// Act
@@ -154,11 +173,11 @@ public class ReviewsControllerTests
 
 		// Assert
 		var okResponse = Assert.IsType<OkObjectResult>(response.Result);
-		var reviews = Assert.IsType<IEnumerable<ReviewDto>>(okResponse.Value, exactMatch: false);
+		var reviews = Assert.IsType<PaginatedResult<ReviewDto>>(okResponse.Value, exactMatch: false);
 
-		Assert.Single(reviews);
+		Assert.Single(reviews.Data);
 
-		_serviceMock.Verify(x => x.GetReviewsForMovieById(1), Times.Once);
+		_serviceMock.Verify(x => x.GetReviewsForMovieById(1, 1, 10), Times.Once);
 	}
 
 	[Theory]

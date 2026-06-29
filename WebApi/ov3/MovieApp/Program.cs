@@ -17,6 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(
 builder.Services.AddScoped<IActorService, ActorService>();
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IReviewsService, ReviewsService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddProblemDetails();
 

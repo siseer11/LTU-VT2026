@@ -103,11 +103,11 @@ public class MovieServicesTests
 		await _context.SaveChangesAsync();
 
 		// Act
-		var response = await _service.GetMovies(genreParam, titleParam, actorParam);
-		var responseList = response.ToList();
+		var response = await _service.GetMovies(genreParam, titleParam, actorParam, 1, 10);
+
 
 		// Assert
-		Assert.Equal(expectedNumberOfItems, responseList.Count);
+		Assert.Equal(expectedNumberOfItems, response.Pagination.TotalItemsCount);
 	}
 
 	[Fact]

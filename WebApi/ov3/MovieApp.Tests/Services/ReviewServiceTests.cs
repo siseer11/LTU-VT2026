@@ -39,7 +39,7 @@ public class ReviewServiceTests
 
 	private async Task<User> CreateAndSaveReviewer()
 	{
-		User user = new() { ImageURL = "TestUser.jpg", Name = "Test user", IsAHater = true };
+		User user = new() { ImageURL = "TestUser.jpg", Name = "Test user", IsAHater = true, Email = "dd@gmail.com", PasswordHash = "strongPasword" };
 		_context.Users.Add(user);
 		await _context.SaveChangesAsync();
 
@@ -84,7 +84,7 @@ public class ReviewServiceTests
 		// Arrange
 
 		// Act
-		var response = await _service.GetReviewsForMovieById(1);
+		var response = await _service.GetReviewsForMovieById(1, 1, 10);
 
 		// Assert
 		Assert.False(response.Success);
@@ -106,11 +106,11 @@ public class ReviewServiceTests
 
 		await _context.SaveChangesAsync();
 		// Act
-		var response = await _service.GetReviewsForMovieById(movie.Id);
+		var response = await _service.GetReviewsForMovieById(movie.Id, 1, 10);
 
 		// Assert
 		Assert.True(response.Success);
-		Assert.Equal(numberOfReviews, response.Data!.Count());
+		Assert.Equal(numberOfReviews, response.Data!.Pagination.TotalItemsCount);
 	}
 
 	[Fact]

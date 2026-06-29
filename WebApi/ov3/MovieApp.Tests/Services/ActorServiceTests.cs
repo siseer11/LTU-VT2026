@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MovieApp.Dtos.Actors;
 using MovieApp.Enums;
 using MovieApp.Models;
+using MovieApp.Results;
 using MovieApp.Services;
 using MovieApp.Tests.Helpers;
 
@@ -67,11 +68,11 @@ public class ActorServiceTests
 		var service = new ActorService(context);
 
 		// Act
-		var result = await service.GetActors(null);
+		var result = await service.GetActors(null, 1, 10);
 
 		// Assert
-		Assert.NotEmpty(result);
-		Assert.Equal(actors.Count, result.Count());
+		Assert.NotEmpty(result.Data);
+		Assert.Equal(actors.Count, result.Pagination.TotalItemsCount);
 	}
 
 	[Fact]
@@ -94,14 +95,14 @@ public class ActorServiceTests
 		var service = new ActorService(context);
 
 		// Act
-		var results = await service.GetActors("ohn");
+		var results = await service.GetActors("ohn", 1, 10);
 
 		// Assert
-		Assert.NotEmpty(results);
-		Assert.Equal(3, results.Count());
-		Assert.Contains(results, actor => actor.Name == "John Doe");
-		Assert.Contains(results, actor => actor.Name == "John I");
-		Assert.Contains(results, actor => actor.Name == "Teddy Tohn");
+		Assert.NotEmpty(results.Data);
+		Assert.Equal(3, results.Pagination.TotalItemsCount);
+		Assert.Contains(results.Data, actor => actor.Name == "John Doe");
+		Assert.Contains(results.Data, actor => actor.Name == "John I");
+		Assert.Contains(results.Data, actor => actor.Name == "Teddy Tohn");
 	}
 
 	[Fact]
@@ -124,10 +125,10 @@ public class ActorServiceTests
 		var service = new ActorService(context);
 
 		// Act
-		var results = await service.GetActors("xoz");
+		var results = await service.GetActors("xoz", 1, 10);
 
 		// Assert
-		Assert.Empty(results);
+		Assert.Empty(results.Data);
 	}
 
 	[Fact]
