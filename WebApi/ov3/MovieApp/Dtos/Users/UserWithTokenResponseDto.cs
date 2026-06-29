@@ -1,6 +1,6 @@
 namespace MovieApp.Dtos.Users;
 
-public record UserCreationResponseDto
+public record UserWithTokenResponseDto
 (
 	string Token,
 	string Email,

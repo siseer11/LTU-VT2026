@@ -13,7 +13,7 @@ public class AuthController(IAuthService service) : ControllerBase
 	private readonly IAuthService _service = service;
 
 	[HttpPost("register")]
-	public async Task<ActionResult<UserCreationResponseDto>> RegisterUser(UserCreationDto userData)
+	public async Task<ActionResult<UserWithTokenResponseDto>> RegisterUser(UserCreationDto userData)
 	{
 		var response = await _service.RegisterUser(userData);
 
@@ -33,8 +33,21 @@ public class AuthController(IAuthService service) : ControllerBase
 	}
 
 	[HttpPost("login")]
-	public async Task<IActionResult> LoginUser()
+	public async Task<ActionResult<UserWithTokenResponseDto>> LoginUser(UserLoginDto loginData)
 	{
-		return Ok();
+		var response = await _service.LoginUser(loginData);
+
+		if (response.Success == false)
+		{
+			return response.ErrorCode switch
+			{
+				LoginErrors.PasswordOrEmailWrong =>
+					BadRequest(new { error = "Password or Email not correct!" }),
+				_ => StatusCode(500)
+			};
+		}
+
+
+		return Ok(response.Data);
 	}
 }

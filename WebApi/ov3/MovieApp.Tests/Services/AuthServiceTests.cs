@@ -109,7 +109,7 @@ public class AuthServiceTests
 
 		// Assert
 		Assert.True(result.Success);
-		Assert.IsType<UserCreationResponseDto>(result.Data);
+		Assert.IsType<UserWithTokenResponseDto>(result.Data);
 		Assert.Equal(result.Data.Email, email);
 
 		var userFromDb = await _context.Users.FirstOrDefaultAsync(u => u.Id.ToString() == result.Data.UserId);

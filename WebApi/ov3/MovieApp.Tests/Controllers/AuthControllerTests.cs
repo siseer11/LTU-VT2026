@@ -45,7 +45,7 @@ public class AuthControllerTests
 		_serviceMock
 			.Setup(x => x.RegisterUser(user))
 			.ReturnsAsync(
-				new GenericResult<UserCreationResponseDto, RegisterUserErrors>()
+				new GenericResult<UserWithTokenResponseDto, RegisterUserErrors>()
 				{
 					Success = false,
 					ErrorCode = errorType
@@ -72,7 +72,7 @@ public class AuthControllerTests
 		_serviceMock.Setup(
 			x => x.RegisterUser(user)
 		).ReturnsAsync(
-			new GenericResult<UserCreationResponseDto, RegisterUserErrors>()
+			new GenericResult<UserWithTokenResponseDto, RegisterUserErrors>()
 			{
 				Success = true,
 				Data = new("token", user.Email, "1")
@@ -84,7 +84,7 @@ public class AuthControllerTests
 
 		// Assert
 		var okResponse = Assert.IsType<OkObjectResult>(response.Result);
-		Assert.IsType<UserCreationResponseDto>(okResponse.Value);
+		Assert.IsType<UserWithTokenResponseDto>(okResponse.Value);
 
 		_serviceMock.Verify(
 			x => x.RegisterUser(user),

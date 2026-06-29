@@ -6,6 +6,6 @@ namespace MovieApp.Services;
 
 public interface IAuthService
 {
-	Task<GenericResult<UserCreationResponseDto, RegisterUserErrors>> RegisterUser(UserCreationDto userData);
-	Task<string> LoginUser(string email, string password);
+	Task<GenericResult<UserWithTokenResponseDto, RegisterUserErrors>> RegisterUser(UserCreationDto userData);
+	Task<GenericResult<UserWithTokenResponseDto, LoginErrors>> LoginUser(UserLoginDto loginData);
 }
