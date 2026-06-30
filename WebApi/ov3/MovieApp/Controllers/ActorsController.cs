@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.Dtos.Actors;
 using MovieApp.Enums;
@@ -39,6 +40,7 @@ public class ActorsController(IActorService service) : ControllerBase
 	}
 
 	[HttpPost()]
+	[Authorize]
 	public async Task<ActionResult<ActorDto>> CreateActor(ActorCreationDto newActorData)
 	{
 		var newlyCreatedActor = await _service.CreateActor(newActorData);
@@ -51,6 +53,7 @@ public class ActorsController(IActorService service) : ControllerBase
 	}
 
 	[HttpDelete("{id:int}")]
+	[Authorize]
 	public async Task<ActionResult> DeleteActor(int id)
 	{
 		await _service.DeleteActor(id);
@@ -58,6 +61,7 @@ public class ActorsController(IActorService service) : ControllerBase
 	}
 
 	[HttpPut("{id:int}")]
+	[Authorize]
 	public async Task<ActionResult> UpdateActor(int id, ActorUpdateDto updateData)
 	{
 		var result = await _service.UpdateActor(id, updateData);

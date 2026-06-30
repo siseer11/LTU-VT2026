@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MovieApp.Dtos.Movies;
 using MovieApp.Services;
 using MovieApp.Enums;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MovieApp.Controllers;
 
@@ -41,6 +42,7 @@ public class MoviesController(IMovieService service) : ControllerBase
 	}
 
 	[HttpPost]
+	[Authorize]
 	public async Task<ActionResult<MovieFullInfoDto>> AddMovie(MovieCreationDto newMovieData)
 	{
 		var result = await _service.AddMovie(newMovieData);
@@ -62,6 +64,7 @@ public class MoviesController(IMovieService service) : ControllerBase
 
 
 	[HttpDelete("{id:int}")]
+	[Authorize]
 	public async Task<ActionResult> DeleteMovie(int id)
 	{
 		await _service.DeleteMovie(id);
@@ -70,6 +73,7 @@ public class MoviesController(IMovieService service) : ControllerBase
 	}
 
 	[HttpPut("{id:int}")]
+	[Authorize]
 	public async Task<ActionResult> FullyUpdateMovie(int id, MovieUpdateDto updateData)
 	{
 		var result = await _service.FullyUpdateMovie(id, updateData);
@@ -93,6 +97,7 @@ public class MoviesController(IMovieService service) : ControllerBase
 
 
 	[HttpPost("{movieId:int}/actors/{actorId:int}")]
+	[Authorize]
 	public async Task<ActionResult> AddActorToMovieCast(int movieId, int actorId)
 	{
 		var result = await _service.AddActorToMovieCast(movieId, actorId);

@@ -29,8 +29,8 @@ public class AuthService(AppDbContext context, IConfiguration configuration) : I
 		var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
 		var jwtSecurityToken = new JwtSecurityToken(
-			_config["Jwt.Issuer"],
-			_config["Jwt.Audience"],
+			_config["Jwt:Issuer"],
+			_config["Jwt:Audience"],
 			claims,
 			DateTime.UtcNow,
 			DateTime.UtcNow.AddHours(1),

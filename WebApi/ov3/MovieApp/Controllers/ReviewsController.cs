@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.Dtos.Reviews;
 using MovieApp.Services;
@@ -23,6 +24,7 @@ public class ReviewsController(IReviewsService service) : ControllerBase
 	}
 
 	[HttpDelete("reviews/{id:int}")]
+	[Authorize]
 	public async Task<ActionResult> DeleteReview(int id)
 	{
 		await _service.DeleteReview(id);
@@ -31,6 +33,7 @@ public class ReviewsController(IReviewsService service) : ControllerBase
 	}
 
 	[HttpPut("reviews/{id:int}")]
+	[Authorize]
 	public async Task<ActionResult> UpdateReview(int id, ReviewUpdateDto updateData)
 	{
 		var result = await _service.UpdateReview(id, updateData);
@@ -72,6 +75,7 @@ public class ReviewsController(IReviewsService service) : ControllerBase
 	}
 
 	[HttpPost("movies/{movieId:int}/reviews")]
+	[Authorize]
 	public async Task<ActionResult<ReviewDto>> CreateReviewForMovieById(int movieId, ReviewCreationDto reviewData)
 	{
 		var result = await _service.CreateReviewForMovieById(movieId, reviewData);
