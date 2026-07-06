@@ -8,7 +8,7 @@ public interface IReviewsService
 {
 	Task<ReviewDetailedDto?> GetReviewById(int id);
 	Task<bool> DeleteReview(int id);
-	Task<GenericResult<bool, UpdateReviewErrors>> UpdateReview(int id, ReviewUpdateDto updateData);
+	Task<GenericResult<bool, UpdateReviewErrors>> UpdateReview(int id, ReviewUpdateDto updateData, int? tokenUserId);
 	Task<GenericResult<PaginatedResult<ReviewDto>, ReviewsForMovieByIdErrors>> GetReviewsForMovieById(int movieId, int page, int itemsPerPage);
-	Task<GenericResult<ReviewDto, CreateReviewErrors>> CreateReviewForMovieById(int movieId, ReviewCreationDto reviewData);
+	Task<GenericResult<ReviewDto, CreateReviewErrors>> CreateReviewForMovieById(int movieId, int reviewerId, ReviewCreationDto reviewData);
 }

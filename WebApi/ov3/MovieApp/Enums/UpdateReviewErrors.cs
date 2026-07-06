@@ -2,5 +2,6 @@ namespace MovieApp.Enums;
 
 public enum UpdateReviewErrors
 {
-	ReviewNotFound
+	ReviewNotFound,
+	WrongUserTryingToUpdate
 }

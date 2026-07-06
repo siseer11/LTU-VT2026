@@ -77,13 +77,13 @@ public class ReviewsService(AppDbContext context) : IReviewsService
 		return review;
 	}
 
-	public async Task<GenericResult<ReviewDto, CreateReviewErrors>> CreateReviewForMovieById(int movieId, ReviewCreationDto reviewData)
+	public async Task<GenericResult<ReviewDto, CreateReviewErrors>> CreateReviewForMovieById(int movieId, int reviewerId, ReviewCreationDto reviewData)
 	{
 		//checks
 		if (await MovieDoesNotExists(movieId))
 			return new() { Success = false, ErrorCode = CreateReviewErrors.MovieNotFound };
 
-		var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == reviewData.ReviewerId);
+		var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == reviewerId);
 		if (user is null)
 			return new() { Success = false, ErrorCode = CreateReviewErrors.UserNotFound };
 
@@ -94,7 +94,7 @@ public class ReviewsService(AppDbContext context) : IReviewsService
 			MovieId = movieId,
 			Comment = reviewData.Comment,
 			Rating = reviewData.Rating,
-			ReviewerId = reviewData.ReviewerId,
+			ReviewerId = reviewerId,
 			CreatedAt = DateTime.UtcNow
 		};
 
@@ -132,11 +132,13 @@ public class ReviewsService(AppDbContext context) : IReviewsService
 		return true;
 	}
 
-	public async Task<GenericResult<bool, UpdateReviewErrors>> UpdateReview(int id, ReviewUpdateDto updateData)
+	public async Task<GenericResult<bool, UpdateReviewErrors>> UpdateReview(int id, ReviewUpdateDto updateData, int? userIdFromToken)
 	{
 		var review = await _context.Reviews.FindAsync(id);
 		if (review is null)
 			return new() { Success = false, ErrorCode = UpdateReviewErrors.ReviewNotFound };
+		else if (review.ReviewerId != userIdFromToken)
+			return new() { Success = false, ErrorCode = UpdateReviewErrors.WrongUserTryingToUpdate };
 
 		review.Edited = true;
 		review.EditedAt = DateTime.Now.ToUniversalTime();

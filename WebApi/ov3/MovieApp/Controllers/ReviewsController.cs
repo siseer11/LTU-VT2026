@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.Dtos.Reviews;
@@ -11,6 +12,16 @@ public class ReviewsController(IReviewsService service) : ControllerBase
 {
 	private readonly IReviewsService _service = service;
 	private const int maxNumberOfReviewsPerPage = 20;
+
+	private int GetReviewerIdFromToken()
+	{
+		// User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		var userIdFromToken = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+		_ = int.TryParse(userIdFromToken, out int id);
+
+		return id;
+	}
 
 	[HttpGet("reviews/{id:int}", Name = "ReviewById")]
 	public async Task<ActionResult<ReviewDetailedDto>> GetReviewById(int id)
@@ -36,7 +47,7 @@ public class ReviewsController(IReviewsService service) : ControllerBase
 	[Authorize]
 	public async Task<ActionResult> UpdateReview(int id, ReviewUpdateDto updateData)
 	{
-		var result = await _service.UpdateReview(id, updateData);
+		var result = await _service.UpdateReview(id, updateData, GetReviewerIdFromToken());
 
 		if (result.Success == false)
 		{
@@ -44,6 +55,8 @@ public class ReviewsController(IReviewsService service) : ControllerBase
 			{
 				Enums.UpdateReviewErrors.ReviewNotFound =>
 					NotFound(),
+				Enums.UpdateReviewErrors.WrongUserTryingToUpdate =>
+					Forbid(),
 				_ =>
 					StatusCode(500)
 			};
@@ -78,7 +91,7 @@ public class ReviewsController(IReviewsService service) : ControllerBase
 	[Authorize]
 	public async Task<ActionResult<ReviewDto>> CreateReviewForMovieById(int movieId, ReviewCreationDto reviewData)
 	{
-		var result = await _service.CreateReviewForMovieById(movieId, reviewData);
+		var result = await _service.CreateReviewForMovieById(movieId, GetReviewerIdFromToken(), reviewData);
 
 		if (result.Success == false)
 		{
