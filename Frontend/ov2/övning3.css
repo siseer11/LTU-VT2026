@@ -1,0 +1,121 @@
+/* ==========================================================================
+   1. GLOBAL RESET
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0f172a; /* Mörkblå bakgrund */
+  color: #f8fafc; /* Ljus text */
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   2. HEADER & MENY
+   ========================================================================== */
+#header-section {
+  background-color: #1e293b;
+  padding: 1.5rem;
+  text-align: center;
+  border-bottom: 2px solid #334155;
+}
+
+.logo {
+  color: #38bdf8;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+/* LEDTRÅD TILL ELEVERNA: Kontrollera avståndet/klickytan här för Lighthouse! */
+.menu-links a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 0 10px;
+}
+
+.menu-links a:hover {
+  color: #38bdf8;
+}
+
+/* ==========================================================================
+   3. LAYOUT (FLEXBOX)
+   ========================================================================== */
+#content-area {
+  max-width: 900px;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 0 1rem;
+
+  /* Lägger kartan och sidbaren bredvid varandra på desktop */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.garage-container {
+  flex: 2; /* Tar upp mer plats */
+  background-color: #1e293b;
+  border: 4px solid #475569;
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+.info-sidebar {
+  flex: 1; /* Tar upp mindre plats */
+  background-color: #1e293b;
+  padding: 1.5rem;
+  border-radius: 8px;
+
+  /* LEDTRÅD TILL ELEVERNA: Kontrasten på denna text är alldeles för svag! */
+  color: #94a3b8;
+  border: 1px solid #334155;
+}
+
+/* ==========================================================================
+   4. GARAGEGOLVET & RUTORNA
+   ========================================================================== */
+.floor-layout {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* Denna klass stylar rutorna (oavsett om det är en div eller en button) */
+.spot {
+  background-color: #334155;
+  width: 9.5rem;
+  height: 6.5rem;
+  cursor: pointer;
+
+  border: 2px dashed #e3940f;
+  border-radius: 6px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.8rem;
+  padding: 0;
+}
+
+/* ==========================================================================
+   5. TILLGÄNGLIGHET (FOKUS)
+   ========================================================================== */
+/* LEDTRÅD TILL ELEVERNA: Här saknas något kritiskt! 
+   När man tabbar med tangentbordet syns det inte var man är. 
+   De måste lägga till och styla :focus-visible här. */
+.menu-links a:focus-visible,
+.spot:focus-visible {
+  outline: 3px solid red;
+}

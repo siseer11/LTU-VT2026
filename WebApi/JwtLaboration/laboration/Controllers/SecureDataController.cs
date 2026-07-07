@@ -10,6 +10,7 @@ public class SecureDataController: ControllerBase {
 	[HttpGet]
 	public IActionResult GetSecureData()
 	{
+		var userNamex = User;
 		var userName = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
 
 		return Ok(new { Message = $"Grattis {userName}, du har nått en skyddad endpoint!" });
