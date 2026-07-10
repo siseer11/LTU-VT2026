@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="sv-SE">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="title" content="SmartParking Admin" />
+    <meta
+      name="description"
+      content="SmartParking Admin, the only admin you need."
+    />
+    <link
+      rel="stylesheet"
+      href="./node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <title>SmartParking Admin</title>
+  </head>
+  <body class="min-vh-100 d-flex flex-column">
+    <!-- Header Start-->
+    <header class="bg-dark shadow-sm">
+      <div
+        class="justify-content-between d-flex align-items-center text-white py-4 px-3"
+        style="max-width: 1500px; margin: 0 auto; width: 100%"
+      >
+        <button
+          class="navbar-toggler d-lg-none btn focus-ring"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#Id2"
+          aria-controls="Id2"
+          aria-label="Open navigation"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+            class="bi"
+            height="24"
+            width="24"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+            ></path>
+          </svg>
+        </button>
+        <span>SmartParking Admin</span>
+      </div>
+    </header>
+    <!-- Header END -->
+    <!-- Slide in nav -->
+    <nav
+      class="offcanvas offcanvas-start"
+      data-bs-backdrop="static"
+      tabindex="-1"
+      id="Id2"
+      aria-labelledby="staticBackdropLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="staticBackdropLabel">Menu</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close navigation"
+        ></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="d-flex flex-column gap-2">
+          <button type="button" class="btn btn-primary text-start">
+            Översikt (Dashboard)
+          </button>
+          <button type="button" class="btn text-start focus-ring">
+            Kameravyer
+          </button>
+          <button type="button" class="btn text-start focus-ring">
+            Prisinställningar
+          </button>
+        </div>
+      </div>
+    </nav>
+    <!-- Slide in nav END -->
+    <div class="container-fluid flex-grow-1 d-flex flex-column">
+      <div
+        class="row flex-grow-1"
+        style="max-width: 1500px; margin: 0 auto; width: 100%"
+      >
+        <!-- Sidebar -->
+        <aside class="d-none d-lg-flex col-3 py-4">
+          <nav class="d-lg-flex flex-column gap-2 flex-grow-1 pe-3">
+            <button type="button" class="btn btn-primary text-start">
+              Översikt (Dashboard)
+            </button>
+            <button type="button" class="btn text-start">Kameravyer</button>
+            <button type="button" class="btn text-start">
+              Prisinställningar
+            </button>
+          </nav>
+        </aside>
+        <!-- Sidebar end -->
+        <!-- Main -->
+        <main class="bg-light border-start col-12 col-lg-9 py-4 px-lg-4">
+          <section>
+            <h1 class="text-dark border-bottom pb-2 mb-3">
+              Garageplan A - Status
+            </h1>
+            <!-- Status cards -->
+            <div class="d-flex flex-wrap gap-2">
+              <div
+                class="card bg-white shadow-sm border-success pe-2 flex-grow-1"
+                style="border-width: 0px 0px 0px 5px; min-width: 250px"
+              >
+                <div class="card-body">
+                  <p
+                    class="card-title text-black small fw-light opacity-75 m-0"
+                  >
+                    INTAKTER IDAG
+                  </p>
+                  <p class="card-text fs-3 fw-bold">4500 KR</p>
+                </div>
+              </div>
+              <div
+                class="card bg-white shadow-sm border-primary pe-2 flex-grow-1"
+                style="border-width: 0px 0px 0px 5px; min-width: 250px"
+              >
+                <div class="card-body">
+                  <p
+                    class="card-title text-black small fw-light opacity-75 m-0"
+                  >
+                    AKTUELL BELAGGNING
+                  </p>
+                  <p class="card-text fs-3 fw-bold">87%</p>
+                </div>
+              </div>
+              <div
+                class="card bg-white shadow-sm border-danger pe-2 flex-grow-1"
+                style="border-width: 0px 0px 0px 5px; min-width: 250px"
+              >
+                <div class="card-body">
+                  <p
+                    class="card-title text-black small fw-light opacity-75 m-0"
+                  >
+                    FELANMALDA RUTOR
+                  </p>
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
+                    <p class="card-text fs-3 fw-bold d-inline m-0">1st</p>
+                    <div class="btn btn-danger btn-sm">
+                      <span class="small">Åtgärd krävs</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Status cards end -->
+          </section>
+          <section>
+            <!-- Table -->
+            <h2 class="pt-5 pb-3 mb-2 border-bottom">Senaste aktivitet</h2>
+            <div class="table-responsive">
+              <table class="table table-sm table-striped">
+                <thead>
+                  <tr>
+                    <th style="min-width: 120px" scope="col">Reg-nr</th>
+                    <th style="min-width: 120px" scope="col">Tidpunkt(in)</th>
+                    <th style="min-width: 90px" scope="col">Ruta</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                  <tr class="">
+                    <td scope="row"><span class="fw-bold">ABC-123</span></td>
+                    <td><span>14:22</span></td>
+                    <td><span>Ruta 04</span></td>
+                    <td>
+                      <div class="btn btn-success btn-sm w-100">Aktiv</div>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <td scope="row"><span class="fw-bold">AXC-123</span></td>
+                    <td><span>15:22</span></td>
+                    <td><span>Ruta 01</span></td>
+                    <td>
+                      <div class="btn btn-success btn-sm w-100">Aktiv</div>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <td scope="row"><span class="fw-bold">APL-003</span></td>
+                    <td><span>11:22</span></td>
+                    <td><span>Ruta 13</span></td>
+                    <td>
+                      <div class="btn btn-secondary btn-sm w-100">Avslutad</div>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <td scope="row"><span class="fw-bold">POC-123</span></td>
+                    <td><span>18:22</span></td>
+                    <td><span>Ruta 12</span></td>
+                    <td>
+                      <div class="btn btn-success btn-sm w-100">Aktiv</div>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <td scope="row"><span class="fw-bold">PPP-113</span></td>
+                    <td><span>10:22</span></td>
+                    <td><span>Ruta 50</span></td>
+                    <td>
+                      <div class="btn btn-success btn-sm w-100">Aktiv</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Table end -->
+          </section>
+          <section>
+            <!-- Aktuella fel -->
+            <h2 class="pt-5 pb-2 mb-3 border-bottom">
+              Aktuella felanmälningar
+            </h2>
+            <div class="card text-dark bg-white">
+              <div
+                class="card-body d-flex align-items-center justify-content-between shadow-sm flex-wrap gap-3"
+              >
+                <p class="small m-0">
+                  <span class="text-danger">Ruta 14:</span> Laddstolpe ur
+                  funktion (Kortslutning).
+                </p>
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalId"
+                >
+                  Markera som åtgärdad
+                </button>
+              </div>
+            </div>
+
+            <!-- Aktuella fel end -->
+          </section>
+        </main>
+        <!-- Main end-->
+        <!-- Modal trigger button -->
+      </div>
+    </div>
+    <!-- Footer-->
+    <footer class="bg-dark col-12 text-center py-3">
+      <span class="text-white-50 small"
+        >&copy; 2026 SmartParking AB - Internkontroll</span
+      >
+    </footer>
+    <!-- Footer end-->
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modalId"
+      tabindex="-1"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      role="dialog"
+      aria-labelledby="modalTitleId"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitleId">Ruta 14</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Vill du markera denna ruta som reparerad?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Stäng
+            </button>
+            <button type="button" class="btn btn-primary">Bekräfta</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal END -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
