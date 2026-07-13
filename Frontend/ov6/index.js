@@ -44,7 +44,7 @@ const createElement = ({ elementType, text, classes, clickHandler }) => {
   if (clickHandler) {
     comp.addEventListener("click", clickHandler);
   }
-  console.log(comp);
+
   return comp;
 };
 
