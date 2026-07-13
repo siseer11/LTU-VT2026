@@ -1,0 +1,131 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 40px;
+  background-color: #f4f7f6;
+  color: #333;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.info-box {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+}
+/* h1 {
+  color: #2c3e50;
+  margin-top: 0;
+}
+h2 {
+  color: #34495e;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 5px;
+} */
+
+main * {
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+}
+
+code {
+  background-color: #eee;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+/* Styling för Nivå 2 & 3 när de skapar element */
+#btn-visa {
+  padding: 12px 20px;
+  font-size: 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+#btn-visa:hover {
+  background-color: #2980b9;
+}
+
+#produkt-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 30px 0;
+}
+#produkt-lista li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f4f7f6;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid #8c8c8c;
+  border-top: 2px solid white;
+}
+.btn-ta-bort {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-ta-bort:hover {
+  background-color: #c0392b;
+}
+
+#total-price {
+  text-align: right;
+  border-top: 2px dashed gray;
+  padding-top: 20px;
+  font-size: 30px;
+}
+
+.remove-item {
+  padding: 12px 20px;
+  font-size: 16px;
+  background-color: #db3434;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s all linear;
+}
+
+.remove-item:hover {
+  transform: scale(1.01);
+  box-shadow: inset 1px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1.product-name {
+  font-size: 25px;
+  font-family: monospace;
+  margin-bottom: 5px;
+  color: #212121;
+}
+
+h2.product-price {
+  font-size: 20px;
+  color: #4d4d4d;
+  margin-bottom: 20px;
+}
+
+p.product-category {
+  font-size: 11px;
+  border: 1px solid;
+  display: inline;
+  padding: 4px 10px;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+main {
+  display: none;
+}
