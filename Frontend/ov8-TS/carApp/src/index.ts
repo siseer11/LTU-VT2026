@@ -123,9 +123,13 @@ const createHandler = async () => {
 // ==========================================
 const deleteCarHandler = async (id: number) => {
   try {
-    await deleteCar(id);
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+    });
 
-    generateCarsList();
+    if (!response.ok) {
+      throw new Error(`Error while deleting car: ${response.status}`);
+    }
   } catch (e) {
     console.error("Something went wrong deleting a car", e);
   }
