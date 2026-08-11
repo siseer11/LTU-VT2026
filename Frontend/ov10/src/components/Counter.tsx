@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
+import { useState } from "react";
 
 interface Props {
   name: string;
@@ -17,18 +18,32 @@ const Counter: React.FC<Props> = ({
   increaseHandler,
   removeHandler,
 }) => {
+  const [exiting, setExiting] = useState(false);
+
+  const handleRemoveClicked = () => {
+    setExiting(true);
+  };
+
+  const handleExitAnimationEnded = () => {
+    if (exiting) {
+      removeHandler();
+    }
+  };
+
   return (
     <Card
       className={cn(
         "w-[30%] min-w-[32%] px-2 select-none animate-fade-in",
         disabled && "opacity-50",
+        exiting && "animate-fade-out",
       )}
+      onAnimationEnd={handleExitAnimationEnded}
     >
       <CardHeader className="flex items-center justify-between">
         <h3 className="text-muted-foreground text-">{name}</h3>
         <Button
-          disabled={disabled}
-          onClick={removeHandler}
+          disabled={disabled || exiting}
+          onClick={handleRemoveClicked}
           variant="destructive"
           className="px-4"
         >
@@ -43,7 +58,7 @@ const Counter: React.FC<Props> = ({
       <CardFooter>
         <Button
           onClick={increaseHandler}
-          disabled={disabled}
+          disabled={disabled || exiting}
           className="w-full py-6"
         >
           {disabled ? "Max nått!" : "Öka värde"}

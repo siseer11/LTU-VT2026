@@ -21,7 +21,7 @@ const AktuellSumma: React.FC<Props> = ({ countersTotal }) => (
           style={{
             width: `${(countersTotal / GOAL_VALUE) * 100}%`,
           }}
-          className="w-[50%] h-full left-0 top-0 bg-primary transition-[width] duration-300 ease-out"
+          className="w-[50%] h-full left-0 top-0 bg-primary rounded-sm transition-[width] duration-300 ease-out"
         ></div>
       </div>
     </CardContent>
