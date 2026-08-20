@@ -11,7 +11,11 @@ export default async function getActorById(actorId: number) {
       id: actorId,
     },
     include: {
-      movies: true,
+      characters: {
+        include: {
+          movie: true,
+        },
+      },
     },
   });
 

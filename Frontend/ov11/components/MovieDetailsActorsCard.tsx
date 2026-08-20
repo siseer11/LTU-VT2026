@@ -38,7 +38,7 @@ export default function MovieDetailsActorsCard({
             <p className="text-white/80 text-sm line-clamp-2">{name}</p>
           </div>
           <div>
-            <h2 className="text-white/90 font-bold">Role:</h2>
+            <h2 className="text-white/90 font-bold">Character:</h2>
             <p className="text-white/80 text-sm line-clamp-2">{character}</p>
           </div>
         </div>

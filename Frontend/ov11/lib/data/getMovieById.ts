@@ -11,9 +11,13 @@ export default async function getMovieById(movieId: number) {
       id: movieId,
     },
     include: {
-      actors: true,
       reviews: true,
       genre: true,
+      characters: {
+        include: {
+          actor: true,
+        },
+      },
     },
   });
 

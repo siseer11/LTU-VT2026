@@ -136,13 +136,13 @@ export default async function Movie({
         <Separator className="mb-8" />
         <h1 className="text-xl font-bold text-white mb-6">Actors:</h1>
         <div className="flex flex-wrap gap-4 justify-between">
-          {movieData.actors?.map((actor) => (
+          {movieData.characters?.map(({ actor, ...character }) => (
             <MovieDetailsActorsCard
               key={actor.id}
               id={actor.id}
               name={actor.name}
-              character={actor.character}
-              image={actor.image}
+              character={character.name}
+              image={character.image || actor.image}
             />
           ))}
         </div>
